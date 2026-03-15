@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Certificate of Participation</title>
+  <style>
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      padding:0;
+      background:#f4f7fb;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    .page{
+      width:1600px;
+      height:1060px;
+      margin:0 auto;
+      background:#fff;
+      position:relative;
+      overflow:hidden;
+      border-bottom:14px solid #184892;
+    }
+
+    .page::before,
+    .page::after{
+      content:"";
+      position:absolute;
+      border-radius:50%;
+      pointer-events:none;
+      opacity:.18;
+      z-index:0;
+    }
+
+    .page::before{
+      width:920px;
+      height:920px;
+      left:-440px;
+      top:-70px;
+      background:
+        repeating-radial-gradient(
+          circle,
+          transparent 0 14px,
+          rgba(24,72,146,.10) 14px 16px
+        );
+    }
+
+    .page::after{
+      width:1150px;
+      height:1150px;
+      right:-430px;
+      top:20px;
+      background:
+        repeating-radial-gradient(
+          circle,
+          transparent 0 15px,
+          rgba(24,72,146,.12) 15px 17px
+        );
+    }
+
+    .content{
+      position:relative;
+      z-index:2;
+      width:100%;
+      height:100%;
+      padding:56px 86px 42px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:flex-start;
+      gap:18px;
+      max-width:840px;
+    }
+
+    .logoBox{
+      width:96px;
+      height:96px;
+      flex:0 0 96px;
+    }
+
+    .logoBox img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+    }
+
+    .brandText{
+      color:#163f86;
+      line-height:1.16;
+    }
+
+    .brandText .college{
+      font-size:22px;
+      font-weight:800;
+      margin-bottom:6px;
+    }
+
+    .brandText .sub{
+      font-size:14px;
+      color:#4b5563;
+      font-weight:700;
+    }
+
+    .title{
+      margin-top:42px;
+      font-family: "Georgia", "Times New Roman", serif;
+      font-size:64px;
+      font-weight:700;
+      color:#222;
+      letter-spacing:1px;
+      text-transform:uppercase;
+    }
+
+    .leftContent{
+      width:67%;
+      padding-top:8px;
+    }
+
+    .line1{
+      margin-top:32px;
+      font-size:28px;
+      color:#222;
+      font-weight:500;
+    }
+
+    .studentName{
+      margin-top:24px;
+      font-family: "Georgia", "Times New Roman", serif;
+      font-size:44px;
+      font-weight:700;
+      color:#1d4f9c;
+      text-transform:uppercase;
+      letter-spacing:.4px;
+    }
+
+    .desc{
+      margin-top:40px;
+      font-size:27px;
+      color:#222;
+      line-height:1.7;
+      max-width:900px;
+    }
+
+    .eventName{
+      display:block;
+      font-size:38px;
+      font-weight:800;
+      margin:8px 0 10px;
+      color:#1a1a1a;
+      text-transform:uppercase;
+    }
+
+    .meta{
+      margin-top:12px;
+      font-size:24px;
+      color:#2f2f2f;
+      line-height:1.8;
+    }
+
+    .meta b{
+      font-weight:800;
+    }
+
+    .rightRibbon{
+      position:absolute;
+      right:175px;
+      top:0;
+      width:150px;
+      height:760px;
+      background:#184892;
+      z-index:2;
+    }
+
+    .rightRibbon::after{
+      content:"";
+      position:absolute;
+      bottom:-28px;
+      left:0;
+      width:0;
+      height:0;
+      border-left:75px solid transparent;
+      border-right:75px solid transparent;
+      border-top:28px solid #f4ad09;
+    }
+
+    .seal{
+      position:absolute;
+      right:110px;
+      top:355px;
+      width:250px;
+      height:250px;
+      border-radius:50%;
+      background:#fff;
+      border:4px solid #1d4f9c;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:4;
+      box-shadow:0 8px 30px rgba(0,0,0,.08);
+    }
+
+    .sealInner{
+      width:210px;
+      height:210px;
+      border-radius:50%;
+      border:3px solid #1d4f9c;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:#1d4f9c;
+      padding:10px;
+    }
+
+    .sealTop{
+      font-size:17px;
+      font-weight:800;
+      letter-spacing:3px;
+      color:#202020;
+      margin-bottom:12px;
+      text-transform:uppercase;
+    }
+
+    .sealCenter{
+      font-size:76px;
+      font-weight:900;
+      line-height:1;
+      color:#2563c9;
+      margin-bottom:8px;
+    }
+
+    .sealBottom{
+      font-size:14px;
+      font-weight:800;
+      letter-spacing:2px;
+      color:#202020;
+      text-transform:uppercase;
+    }
+
+    .signatureWrap{
+      position:absolute;
+      left:90px;
+      bottom:105px;
+      width:390px;
+      text-align:left;
+      z-index:3;
+    }
+
+    .signatureWrap img{
+      width:290px;
+      height:auto;
+      display:block;
+      margin-bottom:2px;
+      object-fit:contain;
+    }
+
+    .signLabel{
+      font-size:22px;
+      color:#222;
+      font-weight:700;
+      line-height:1.35;
+    }
+
+    .signSub{
+      font-size:18px;
+      color:#444;
+      font-weight:600;
+    }
+
+    .qrWrap{
+      position:absolute;
+      right:120px;
+      bottom:105px;
+      text-align:center;
+      z-index:4;
+      width:180px;
+    }
+
+    .qrWrap img{
+      width:118px;
+      height:118px;
+      background:#fff;
+      padding:6px;
+      border:2px solid #d1d5db;
+    }
+
+    .certNo{
+      margin-top:10px;
+      font-size:15px;
+      color:#374151;
+      font-weight:700;
+      line-height:1.5;
+      word-break:break-word;
+    }
+
+    .issued{
+      font-size:14px;
+      color:#6b7280;
+      margin-top:4px;
+      font-weight:600;
+    }
+
+    .verify{
+      font-size:12px;
+      color:#64748b;
+      margin-top:6px;
+      line-height:1.4;
+      word-break:break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="rightRibbon"></div>
+
+    <div class="seal">
+      <div class="sealInner">
+        <div class="sealTop">Verified</div>
+        <div class="sealCenter">G</div>
+        <div class="sealBottom">Certificate</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="brand">
+        <div class="logoBox">
+          <img src="{{LOGO_URL}}" alt="Vignan Logo" />
+        </div>
+
+        <div class="brandText">
+          <div class="college">{{COLLEGE_NAME}}</div>
+          <div class="sub">{{COLLEGE_SUBTITLE}}</div>
+        </div>
+      </div>
+
+      <div class="leftContent">
+        <div class="title">Certificate of Participation</div>
+
+        <div class="line1">Presented to</div>
+
+        <div class="studentName">{{USER_NAME}}</div>
+
+        <div class="desc">
+          For successfully participating in the event
+          <span class="eventName">{{EVENT_TITLE}}</span>
+        </div>
+
+        <div class="meta">
+          During the <b>College Fest</b> organized by<br />
+          <b>Vignan's Foundation for Science, Technology & Research (Deemed to be University)</b><br />
+          Event conducted on <b>{{EVENT_DATE}}</b>{{VENUE_BLOCK}}
+        </div>
+      </div>
+    </div>
+
+    <div class="signatureWrap">
+      <img src="{{VC_SIGNATURE_URL}}" alt="Vice Chancellor Signature" />
+      <div class="signLabel">Col. Prof. P. Nagabhushan</div>
+      <div class="signSub">Vice-Chancellor</div>
+    </div>
+
+    <div class="qrWrap">
+      <img src="{{QR_CODE_DATA_URL}}" alt="QR Code" />
+      <div class="certNo">Certificate No: {{CERTIFICATE_NO}}</div>
+      <div class="issued">Issued on {{ISSUED_AT}}</div>
+      <div class="verify">{{VERIFY_URL}}</div>
+    </div>
+  </div>
+</body>
+</html>

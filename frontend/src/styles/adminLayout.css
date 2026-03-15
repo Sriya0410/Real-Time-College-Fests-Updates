@@ -1,0 +1,252 @@
+:root{
+  --student-surface: #0d1430;
+  --border: rgba(255,255,255,.10);
+  --border-strong: rgba(255,255,255,.16);
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.70);
+  --accent: #7c5cff;
+}
+
+/* =====================
+   ADMIN SHELL
+===================== */
+
+.adminShell{
+  min-height: 100vh;
+  background: var(--student-surface);
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+/* ✅ FULL WIDTH FIX */
+.adminContent{
+  padding-top: 14px;
+  width: 100%;
+  max-width: none;   /* ✅ removed 1200px */
+  margin: 0;         /* ✅ removed auto centering */
+  box-sizing: border-box;
+}
+
+/* =====================
+   TOPBAR
+===================== */
+
+.adminTopbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px 16px;
+
+  background: var(--student-surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.35);
+}
+
+.adminMenuBtn{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: transparent;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color: #fff;
+  font-size: 18px;
+}
+
+.adminTopbarTitle{
+  flex: 1;
+  text-align: center;
+  line-height: 1;
+}
+
+.adminTopbarBrand{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  font-weight: 1000;
+  color: var(--text);
+  font-size: 24px;
+  letter-spacing: .8px;
+  text-shadow: 0 2px 12px rgba(124,92,255,.35);
+}
+
+.adminDot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background: var(--accent);
+  display:inline-block;
+}
+
+.adminTopbarSub{
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.adminTopbarRight{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.adminUserPill{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  border:1px solid var(--border);
+  padding:8px 12px;
+  border-radius:999px;
+  background: rgba(255,255,255,.03);
+}
+
+.adminUserName{
+  font-weight:900;
+  color: var(--text);
+}
+
+/* =====================
+   SIDEBAR
+===================== */
+
+.adminSidebar{
+  position:fixed;
+  top:0;
+  left:0;
+  height:100vh;
+  width:290px;
+  padding:14px;
+
+  background: var(--student-surface);
+  border-right: 1px solid var(--border);
+
+  transform: translateX(-110%);
+  transition: transform .25s ease;
+  z-index:100;
+  box-sizing: border-box;
+}
+
+.adminSidebar.open{
+  transform: translateX(0);
+}
+
+.adminSidebarHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:14px;
+}
+
+.adminSidebarBrand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:900;
+  color: var(--text);
+}
+
+.adminCloseBtn{
+  border:1px solid var(--border);
+  background: transparent;
+  color:white;
+  border-radius:12px;
+  padding:8px 10px;
+  cursor:pointer;
+}
+
+/* navigation */
+.adminSidebarNav{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding-right:4px;
+  overflow-y:auto;
+  height: calc(100vh - 100px);
+}
+
+.adminSectionLabel{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  color: var(--muted);
+  margin-top:10px;
+}
+
+.adminDivider{
+  height:1px;
+  background: rgba(255,255,255,.08);
+  margin:6px 0;
+}
+
+.adminNavItem{
+  display:flex;
+  align-items:center;
+  min-height:44px;
+  padding:0 14px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.03);
+  color: var(--text);
+  text-decoration:none;
+  font-weight:700;
+  transition:.2s ease;
+}
+
+.adminNavItem:hover{
+  background: rgba(255,255,255,.08);
+  border-color: var(--border-strong);
+}
+
+.adminNavItem.active{
+  background: rgba(124,92,255,.25);
+  border-color: var(--accent);
+}
+
+.adminLogoutBtn{
+  margin-top:8px;
+  padding:12px 14px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.03);
+  color:white;
+  font-weight:900;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.adminLogoutBtn:hover{
+  background: rgba(255,255,255,.08);
+}
+
+/* backdrop */
+.adminBackdrop{
+  position:fixed;
+  inset:0;
+  background: rgba(0,0,0,.55);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .2s ease;
+  z-index:90;
+}
+
+.adminBackdrop.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+/* =====================
+   MOBILE
+===================== */
+
+@media (max-width: 768px){
+  .adminTopbarBrand{
+    font-size: 18px;
+  }
+}

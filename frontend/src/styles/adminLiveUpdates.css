@@ -1,0 +1,136 @@
+:root {
+  --alu-bg: #0d1430;
+  --alu-card: #ffffff;
+  --alu-text: #111;
+  --alu-muted: #6b7280;
+  --alu-border: rgba(0, 0, 0, 0.08);
+  --alu-accent: #7c5cff;
+}
+
+/* PAGE */
+
+.aluPage {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* HEADER */
+
+.aluHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.aluHeader h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 900;
+  color: #111;
+}
+
+.aluHeader p {
+  margin: 6px 0 0;
+  color: var(--alu-muted);
+  font-size: 14px;
+}
+
+.aluBadge {
+  background: #eef2ff;
+  color: #3730a3;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+/* ALERT */
+
+.aluAlert {
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #ffe4e6;
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+/* CARD */
+
+.aluCard {
+  background: var(--alu-card);
+  border-radius: 18px;
+  padding: 22px;
+  border: 1px solid var(--alu-border);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+}
+
+/* FIELD */
+
+.aluField {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.aluField label {
+  font-weight: 800;
+  font-size: 13px;
+  color: #111;
+}
+
+/* INPUTS — ⭐ VISIBILITY FIX */
+
+.aluField input,
+.aluField textarea,
+.aluField select {
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--alu-border);
+  background: #f9fafb;
+  color: #111;              /* ⭐ VERY IMPORTANT */
+  outline: none;
+  font-size: 14px;
+}
+
+.aluField textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+.aluField input::placeholder,
+.aluField textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* BUTTON */
+
+.aluActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.aluBtn {
+  background: linear-gradient(90deg, #6b7cff, #7c5cff);
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.aluBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(124, 92, 255, 0.35);
+}
+
+.aluBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -1,0 +1,360 @@
+.checkinPage {
+  min-height: calc(100vh - 70px);
+  padding: 24px;
+  background: linear-gradient(180deg, #f6f8ff 0%, #eef2ff 45%, #ffffff 100%);
+  box-sizing: border-box;
+}
+
+.checkinWrap {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.checkinTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.checkinTitle {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.checkinSub {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.scanBadge {
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+
+.scanBadge.ready {
+  background: #ecfdf5;
+  color: #166534;
+  border-color: #bbf7d0;
+}
+
+.scanBadge.busy {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+
+.checkinGrid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.checkinCard {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 24px;
+  padding: 20px;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+}
+
+.cardHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.cardHead h3 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.cardHead span {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.scannerCard {
+  position: sticky;
+  top: 18px;
+}
+
+.scannerActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.checkinBtn {
+  border: none;
+  border-radius: 12px;
+  padding: 11px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.checkinBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.checkinBtn.primary {
+  background: #2563eb;
+  color: #fff;
+}
+
+.checkinBtn.primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.checkinBtn.secondary {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.checkinBtn.upload {
+  background: #111827;
+  color: #fff;
+}
+
+.qrReaderBox {
+  width: 100%;
+  max-width: 420px;   /* reduced size */
+  min-height: 320px;  /* reduced height */
+  margin: 0 auto;     /* center box */
+  border: 2px dashed #cbd5e1;
+  border-radius: 22px;
+  overflow: hidden;
+  padding: 12px;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  box-sizing: border-box;
+}
+
+.qrReaderBox video {
+  width: 100% !important;
+  height: 280px !important;   /* fixed smaller preview */
+  object-fit: cover !important;
+  border-radius: 16px !important;
+}
+
+.resultCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.resultBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  border-radius: 18px;
+  padding: 16px;
+  border: 1px solid transparent;
+  animation: fadePop 0.25s ease;
+}
+
+.resultBanner.success {
+  background: #ecfdf5;
+  border-color: #bbf7d0;
+}
+
+.resultBanner.error {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.resultBanner.neutral {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.resultIcon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  background: rgba(255, 255, 255, 0.75);
+  flex-shrink: 0;
+}
+
+.resultTitle {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.resultText {
+  margin-top: 4px;
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.studentCard {
+  background: #fcfcff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 16px;
+}
+
+.studentHead {
+  font-size: 15px;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 14px;
+}
+
+.emptyState {
+  padding: 14px;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.studentGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.detailBox {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 12px 14px;
+}
+
+.detailBox.full {
+  grid-column: 1 / -1;
+}
+
+.detailBox span {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.detailBox strong {
+  display: block;
+  font-size: 15px;
+  color: #0f172a;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.scanTips {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 14px 16px;
+}
+
+.tipsHead {
+  font-size: 15px;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.scanTips ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+@keyframes fadePop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 1100px) {
+  .checkinGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .scannerCard {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .checkinPage {
+    padding: 14px;
+  }
+
+  .checkinCard {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .checkinTitle {
+    font-size: 24px;
+  }
+
+  .studentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .qrReaderBox {
+    max-width: 100%;
+    min-height: 260px;
+    padding: 10px;
+  }
+
+  .qrReaderBox video {
+    height: 220px !important;
+  }
+
+  .scannerActions {
+    flex-direction: column;
+  }
+}
+
+.qrReaderBox > div {
+  width: 100% !important;
+}
+
+.qrReaderBox section {
+  width: 100% !important;
+  border-radius: 16px !important;
+  overflow: hidden;
+}
+
+.qrReaderBox img {
+  max-width: 100% !important;
+  border-radius: 16px !important;
+}

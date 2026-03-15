@@ -1,0 +1,23 @@
+.ticketPage{
+  padding: 24px;
+  color: white;
+}
+
+.ticketTitle{
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.ticketCard{
+  margin-top: 18px;
+  padding: 24px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.14);
+  max-width: 520px;
+}
+
+.ticketRow{
+  margin-bottom: 10px;
+  font-size: 15px;
+}

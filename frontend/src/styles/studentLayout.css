@@ -1,0 +1,605 @@
+/* =====================
+   EVENTS PREMIUM PAGE STYLES (kept)
+===================== */
+
+.eventsPage2{
+  width: 100%;
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+.eventsHero2{
+  width: 100%;
+  border-radius: 28px;
+  padding: 44px 42px;
+  color: #fff;
+  background: linear-gradient(90deg, #6b7cff, #7a4aa8);
+  box-shadow: 0 20px 60px rgba(0,0,0,.28);
+}
+
+.eventsHero2 h1{
+  margin: 0;
+  font-size: 56px;
+  font-weight: 1000;
+  letter-spacing: .2px;
+}
+
+.eventsHero2 p{
+  margin: 12px 0 0;
+  font-size: 18px;
+  opacity: .92;
+}
+
+.todayPill2{
+  margin-top: 18px;
+  display: inline-flex;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.18);
+  border: 1px solid rgba(255,255,255,.26);
+  font-weight: 900;
+}
+
+.filtersPanel2{
+  margin-top: 18px;
+  background: rgba(255,255,255,.92);
+  border-radius: 26px;
+  padding: 22px 22px;
+  box-shadow: 0 18px 55px rgba(0,0,0,.18);
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+.search2{
+  width: 100%;
+  padding: 16px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.10);
+  outline: none;
+  font-size: 15px;
+  background: #fff;
+}
+
+.filtersRow2{
+  margin-top: 16px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.select2{
+  min-width: 210px;
+  padding: 14px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: #fff;
+  outline: none;
+  font-weight: 700;
+}
+
+.check2{
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  color: rgba(0,0,0,.70);
+}
+
+.check2 input{
+  width: 18px;
+  height: 18px;
+}
+
+.reset2{
+  padding: 14px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: #fff;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.reset2:hover{
+  background: rgba(0,0,0,.04);
+}
+
+.allWrap2{ margin-top: 34px; }
+.allHead2{ margin-bottom: 18px; }
+
+.allTitle2{
+  font-size: 34px;
+  font-weight: 1000;
+  color: #fff;
+  letter-spacing: .3px;
+}
+
+.allTitle2 span{
+  font-size: 18px;
+  font-weight: 900;
+  opacity: .75;
+  margin-left: 8px;
+}
+
+.allLine2{
+  margin-top: 12px;
+  height: 4px;
+  width: 150px;
+  border-radius: 999px;
+  background: #2f65ff;
+}
+
+.grid2{
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.card2{
+  background: rgba(255,255,255,.96);
+  border-radius: 20px;
+  border: 1px solid rgba(0,0,0,.08);
+  box-shadow: 0 10px 26px rgba(0,0,0,.12);
+  padding: 18px 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardTop2{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pillCat2{
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.06);
+  border: 1px solid rgba(0,0,0,.08);
+  font-size: 12px;
+  font-weight: 1000;
+  letter-spacing: .4px;
+}
+
+.pillPrice2{
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 1000;
+  border: 1px solid rgba(0,0,0,.08);
+}
+
+.pillPrice2.free{
+  background: rgba(0, 200, 90, .14);
+  border-color: rgba(0, 200, 90, .30);
+  color: #0a7a3a;
+}
+
+.pillPrice2.paid{
+  background: rgba(255, 60, 60, .14);
+  border-color: rgba(255, 60, 60, .30);
+  color: #b10000;
+}
+
+.cardTitle2{
+  margin: 16px 0 8px;
+  font-size: 24px;
+  font-weight: 1000;
+  color: #111;
+}
+
+.meta2{
+  margin-top: 8px;
+  display: grid;
+  gap: 12px;
+  color: rgba(0,0,0,.72);
+  font-weight: 600;
+}
+
+.metaRow2{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ico2{ font-size: 16px; opacity: .9; }
+.ico2.time{ margin-left: 10px; }
+
+.metaLoc2{
+  color: rgba(0,0,0,.70);
+}
+
+.priceTag2{
+  margin-left: auto;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 900;
+  border: 1px solid rgba(0,0,0,.08);
+}
+
+.priceTag2.free{
+  background: rgba(0, 200, 90, .14);
+  border-color: rgba(0, 200, 90, .30);
+  color: #0a7a3a;
+}
+
+.priceTag2.paid{
+  background: rgba(255, 60, 60, .14);
+  border-color: rgba(255, 60, 60, .30);
+  color: #b10000;
+}
+
+.desc2{
+  margin: 0;
+  color: rgba(0,0,0,.62);
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.btn2{
+  margin-top: 16px;
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  padding: 16px 16px;
+  font-size: 16px;
+  font-weight: 1000;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn2.free{
+  background: linear-gradient(90deg, #00a43b, #00d084);
+}
+
+.btn2.paid{
+  background: linear-gradient(90deg, #ff1a1a, #ff00a8);
+}
+
+.arr2{ font-size: 18px; }
+
+.msg2{
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  color: rgba(255,255,255,.92);
+}
+
+@media (max-width: 1100px){
+  .grid2{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .eventsHero2 h1{ font-size: 44px; }
+}
+
+@media (max-width: 700px){
+  .grid2{ grid-template-columns: 1fr; }
+  .eventsHero2{ padding: 28px 18px; }
+  .eventsHero2 h1{ font-size: 32px; }
+  .filtersPanel2{ padding: 16px; }
+  .check2{ margin-left: 0; }
+}
+
+/* =====================
+   STUDENT THEME TOKENS
+===================== */
+
+:root{
+  --student-surface: #0d1430;
+  --border: rgba(255,255,255,.10);
+  --border-strong: rgba(255,255,255,.16);
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.70);
+  --accent: #7c5cff;
+}
+
+/* =====================
+   TOPBAR (2 rows)
+===================== */
+
+.studentTopbar{
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
+  padding:14px 16px;
+
+  background: var(--student-surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.35);
+}
+
+.topbarRow{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.hamburger{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: transparent;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  flex: 0 0 auto;
+}
+
+.hamburger span{
+  width:18px;
+  height:2px;
+  background: white;
+}
+
+.topTitle{
+  flex: 1;
+  text-align: center;
+  font-weight: 1000;
+  color: var(--text);
+  font-size: 24px;
+  letter-spacing: 0.8px;
+  line-height: 1;
+  text-shadow: 0 2px 12px rgba(124,92,255,.35);
+}
+
+.topRight{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  border:1px solid var(--border);
+  padding:8px 12px;
+  border-radius:999px;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.welcomeText{ color: var(--muted); }
+.welcomeName{ font-weight:900; color: var(--text); }
+
+.topbarTicker{
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  border-radius: 14px;
+  padding: 8px 10px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+.topbarTickerTrack{
+  display: inline-flex;
+  gap: 40px;
+  align-items: center;
+  will-change: transform;
+  animation: topbarScroll 28s linear infinite;
+}
+
+.topbarTicker:hover .topbarTickerTrack{
+  animation-play-state: paused;
+}
+
+.topbarTickerItem{
+  color: rgba(255,255,255,.90);
+  font-weight: 800;
+  font-size: 13px;
+  opacity: .92;
+}
+
+@keyframes topbarScroll{
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .topbarTickerTrack{ animation: none; }
+}
+
+/* =====================
+   PAGE OUTER WRAPPER
+===================== */
+
+.studentShell{
+  min-height: 100vh;
+  background: var(--student-surface);
+  padding: 14px;
+
+  /* ✅ IMPORTANT: creates a stacking context so leaflet can’t escape */
+  isolation: isolate;
+}
+
+/* =====================
+   SIDEBAR  ✅ FIXED Z-INDEX
+===================== */
+
+.sidebar{
+  position:fixed;
+  top:0;
+  left:0;
+  height:100vh;
+  width:290px;
+  padding:14px;
+
+  background: var(--student-surface);
+  border-right: 1px solid var(--border);
+
+  transform: translateX(-110%);
+  transition: transform .25s ease;
+
+  /* ✅ was 100, make it very high */
+  z-index: 5000;
+}
+
+.sidebar.open{ transform: translateX(0); }
+
+.sidebarHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:14px;
+}
+
+.sidebarBrand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:900;
+  color: var(--text);
+}
+
+.brandDot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background: var(--accent);
+}
+
+.closeBtn{
+  border:1px solid var(--border);
+  background: transparent;
+  color:white;
+  border-radius:12px;
+  padding:8px 10px;
+  cursor:pointer;
+}
+
+.sidebarNav{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding-right:4px;
+  overflow-y:auto;
+  height: calc(100vh - 100px);
+}
+
+.navSectionLabel{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  color: var(--muted);
+  margin-top:10px;
+}
+
+.navDivider{
+  height:1px;
+  background: rgba(255,255,255,.08);
+  margin:6px 0;
+}
+
+.navItem{
+  display:flex;
+  align-items:center;
+  min-height:44px;
+  padding:0 14px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.03);
+  color: var(--text);
+  text-decoration:none;
+  font-weight:700;
+  transition:.2s ease;
+}
+
+.navItem:hover{
+  background: rgba(255,255,255,.08);
+  border-color: var(--border-strong);
+}
+
+.navItem.active{
+  background: rgba(124,92,255,.25);
+  border-color: var(--accent);
+}
+
+.sidebarLogout{
+  margin-top:8px;
+  padding:12px 14px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.03);
+  color:white;
+  font-weight:900;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.sidebarLogout:hover{
+  background: rgba(255,255,255,.08);
+}
+
+/* ✅ Backdrop UNDER sidebar but ABOVE page */
+.backdrop{
+  position:fixed;
+  inset:0;
+  background: rgba(0,0,0,.55);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .2s ease;
+
+  /* ✅ was 90, make it high but lower than sidebar */
+  z-index: 4500;
+}
+
+.backdrop.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+/* =====================
+   COMMON CARD
+===================== */
+
+.card{
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.03);
+  border-radius: 18px;
+  padding: 16px;
+  margin-top: 14px;
+  color: var(--text);
+}
+
+.muted{ color: var(--muted); }
+
+/* =====================
+   ✅ FINAL LAYOUT SCROLL
+===================== */
+
+.studentShellLayout{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.studentTopbarWrap{
+  flex: 0 0 auto;
+}
+
+/* ✅ Outlet pages scroll here */
+.studentPageBody{
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-top: 14px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* =====================
+   MOBILE
+===================== */
+
+@media (max-width: 768px){
+  .topTitle{ font-size: 18px; }
+  .topbarTickerItem{ font-size: 12px; }
+  .studentPageBody{ padding-top: 12px; }
+}

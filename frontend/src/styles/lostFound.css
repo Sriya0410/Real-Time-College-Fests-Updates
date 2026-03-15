@@ -1,0 +1,588 @@
+/* =========================
+   LOST & FOUND (Student) CSS
+========================= */
+
+:root{
+  --student-surface: #0d1430;
+  --border: rgba(255,255,255,.18);
+  --border-strong: rgba(255,255,255,.30);
+  --text: rgba(255,255,255,.96);
+  --muted: rgba(255,255,255,.78);
+  --accent: #7c5cff;
+
+  --glass-1: rgba(255,255,255,.10);
+  --glass-2: rgba(255,255,255,.07);
+  --glass-3: rgba(255,255,255,.05);
+}
+
+/* page wrapper */
+.lostPage{
+  width: 100%;
+  padding: 18px 24px;
+  box-sizing: border-box;
+  min-height: 100vh;
+  color: var(--text);
+  background:
+    radial-gradient(1200px 600px at 10% 0%, rgba(124,92,255,.18), transparent 60%),
+    radial-gradient(1000px 600px at 90% 10%, rgba(107,124,255,.14), transparent 55%),
+    var(--student-surface);
+}
+
+/* header */
+.lostHeader{
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.lostHeader h1{
+  margin: 0;
+  font-size: 36px;
+  font-weight: 1000;
+  letter-spacing: .2px;
+}
+
+.lostSub{
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 13px;
+}
+
+/* messages */
+.lostMsg{
+  margin: 10px 0 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.06);
+  font-weight: 800;
+}
+
+.lostMsg.error{
+  border-color: rgba(255,120,120,.35);
+  color: #ffd1d1;
+}
+
+/* filters */
+.lostFilters{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  margin-bottom: 14px;
+  align-items: center;
+}
+
+.lostFilterRight{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lostSearch{
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.08);
+  color: var(--text);
+  padding: 0 14px;
+  outline: none;
+}
+
+.lostSearch::placeholder{
+  color: rgba(255,255,255,.70);
+}
+
+.lostSelect{
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(15,23,42,.35);
+  color: white;
+  font-weight: 800;
+  min-width: 160px;
+}
+
+.lostRefreshBtn{
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.07);
+  color: var(--text);
+  font-weight: 900;
+  font-size: 13px;
+  cursor: pointer;
+  transition: .2s ease;
+  white-space: nowrap;
+}
+
+.lostRefreshBtn:hover{
+  background: rgba(255,255,255,.12);
+  border-color: var(--border-strong);
+}
+
+.lostRefreshBtn:disabled{
+  opacity: .65;
+  cursor: not-allowed;
+}
+
+/* grid */
+.lostGrid{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+@media (max-width: 1100px){
+  .lostGrid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 760px){
+  .lostFilters{
+    grid-template-columns: 1fr;
+  }
+
+  .lostFilterRight{
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 640px){
+  .lostGrid{ grid-template-columns: 1fr; }
+}
+
+/* card */
+.lostCard{
+  border: 1px solid var(--border);
+  background: var(--glass-2);
+  border-radius: 18px;
+  padding: 16px;
+  backdrop-filter: blur(12px);
+  transition: .2s ease;
+}
+
+.lostCard:hover{
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  background: var(--glass-1);
+}
+
+.lostCardTop{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.lostTitle{
+  font-weight: 1000;
+  font-size: 16px;
+}
+
+.lostDesc{
+  margin-top: 10px;
+  color: rgba(255,255,255,.86);
+  font-size: 13px;
+  line-height: 1.4;
+  min-height: 36px;
+}
+
+.lostMeta{
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.dot{
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.45);
+}
+
+/* status badge */
+.lostStatus{
+  font-size: 11px;
+  font-weight: 1000;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.06);
+  white-space: nowrap;
+}
+
+.lostStatus.lost{
+  background: rgba(255, 220, 120, .14);
+  border-color: rgba(255, 220, 120, .30);
+}
+
+.lostStatus.found{
+  background: rgba(0, 255, 170, .12);
+  border-color: rgba(0, 255, 170, .30);
+}
+
+.lostStatus.closed{
+  background: rgba(255, 120, 120, .12);
+  border-color: rgba(255, 120, 120, .30);
+}
+
+/* form */
+.lostForm{
+  max-width: 640px;
+  border: 1px solid var(--border);
+  background: var(--glass-2);
+  border-radius: 18px;
+  padding: 18px;
+  backdrop-filter: blur(12px);
+}
+
+.formGroup{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.formGroup label{
+  font-size: 12px;
+  color: rgba(255,255,255,.86);
+  font-weight: 1000;
+  letter-spacing: .2px;
+}
+
+.formGroup input,
+.formGroup textarea{
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.08);
+  color: var(--text);
+  border-radius: 14px;
+  padding: 12px 12px;
+  outline: none;
+  font-weight: 800;
+}
+
+.formGroup textarea{
+  resize: vertical;
+  min-height: 120px;
+}
+
+.formGroup input::placeholder,
+.formGroup textarea::placeholder{
+  color: rgba(255,255,255,.65);
+}
+
+/* buttons */
+.primaryBtn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(124,92,255,.45);
+  background: rgba(124,92,255,.30);
+  color: #fff;
+  font-weight: 1000;
+  text-decoration: none;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.primaryBtn:hover{
+  background: rgba(124,92,255,.42);
+  border-color: rgba(124,92,255,.70);
+}
+
+.primaryBtn:disabled{
+  opacity: .65;
+  cursor: not-allowed;
+}
+
+.btnSmall2{
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.08);
+  color: var(--text);
+  font-weight: 1000;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.btnSmall2:hover{
+  background: rgba(255,255,255,.12);
+  border-color: var(--border-strong);
+}
+
+/* generic card */
+.card{
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.06);
+  border-radius: 18px;
+  padding: 16px;
+  backdrop-filter: blur(10px);
+}
+
+/* image in list card */
+.lostImg{
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-top: 12px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+}
+
+/* image preview in report form */
+.lostImgPreview{
+  width: 100%;
+  max-height: 260px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  margin-top: 10px;
+}
+
+.hintText{
+  margin-top: 6px;
+  font-size: 12px;
+  color: rgba(255,255,255,.72);
+  font-weight: 800;
+}
+
+/* receipt */
+.lfReceiptWrap{
+  margin-top: 18px;
+  display:flex;
+  justify-content:center;
+}
+
+.lfReceiptOuter{
+  width: 100%;
+  max-width: 540px;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.35);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
+.lfReceiptPaper{
+  width: 360px;
+  max-width: 100%;
+  margin: 0 auto;
+  background: #fff;
+  color: #0b1220;
+  border-radius: 14px;
+  border: 1px solid rgba(2,6,23,.12);
+  padding: 16px 14px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  line-height: 1.35;
+  box-shadow: 0 10px 25px rgba(0,0,0,.18);
+}
+
+.lfReceiptPaper::before{
+  content:"";
+  display:block;
+  height:8px;
+  margin:-16px -14px 10px;
+  border-radius:14px 14px 0 0;
+  background: linear-gradient(to right,
+    rgba(0,0,0,0.08) 0%,
+    rgba(0,0,0,0.02) 18%,
+    rgba(0,0,0,0.08) 36%,
+    rgba(0,0,0,0.02) 54%,
+    rgba(0,0,0,0.08) 72%,
+    rgba(0,0,0,0.02) 90%,
+    rgba(0,0,0,0.08) 100%
+  );
+}
+
+.lfCenter{ text-align:center; }
+.lfBold{ font-weight: 900; }
+.lfMuted{ opacity: .75; }
+.lfSmall{ font-size: 11px; }
+
+.lfBrand{
+  font-size: 14px;
+  letter-spacing: .6px;
+}
+
+.lfLine{
+  border-top: 1px dashed rgba(2,6,23,.55);
+  margin: 10px 0;
+}
+
+.lfRow2{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap: wrap;
+}
+
+.lfKV{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-top: 6px;
+}
+
+.lfDesc{
+  max-width: 220px;
+  text-align: right;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.lfReceiptImg{
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(2,6,23,.10);
+  margin-top: 8px;
+}
+
+.lfReceiptActions{
+  margin-top: 12px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap: wrap;
+}
+
+/* print */
+@media print{
+  body *{ visibility:hidden !important; }
+
+  #lf-receipt, #lf-receipt *{
+    visibility:visible !important;
+  }
+
+  #lf-receipt{
+    position:absolute;
+    left:0;
+    top:0;
+    width: 320px !important;
+    border: none !important;
+    box-shadow:none !important;
+    border-radius:0 !important;
+    padding: 10px 10px !important;
+  }
+
+  *{
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+.lostActions{
+  margin-top: 12px;
+  display:flex;
+}
+
+.lostActions .btnSmall2{
+  width: 100%;
+  text-decoration: none !important;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height: 40px;
+}
+
+/* floating receipts button */
+.lfCornerReceiptsBtn {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(17, 24, 39, 0.85);
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+.lfCornerReceiptsBtn:hover {
+  background: rgba(17, 24, 39, 0.95);
+  transform: translateY(-1px);
+}
+
+.lfCornerBadge {
+  min-width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 900;
+  background: rgba(99, 102, 241, 0.95);
+  color: white;
+}
+
+/* receipts list */
+.lfReceiptsCard {
+  background: linear-gradient(180deg, #111827 0%, #0b1220 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.lfReceiptRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.lfReceiptRow:last-child {
+  border-bottom: none;
+}
+
+.lfReceiptRowLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lfReceiptTitle {
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.lfReceiptSub {
+  font-size: 12px;
+  opacity: 0.65;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.lfReceiptRowRight {
+  display: inline-flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}

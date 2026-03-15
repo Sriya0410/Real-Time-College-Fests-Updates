@@ -1,0 +1,22 @@
+.landingWrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+.landingCard{
+  width:min(650px, 94vw);
+  padding:26px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.10);
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+.landingCard h1{ margin:0 0 10px; }
+.landingActions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}

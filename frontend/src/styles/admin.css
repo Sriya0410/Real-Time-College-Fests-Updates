@@ -1,0 +1,318 @@
+:root{
+  --bg: #0d1430;
+  --border: rgba(255,255,255,.10);
+  --border-strong: rgba(255,255,255,.16);
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.70);
+  --accent: #7c5cff;
+}
+
+/* =====================
+   PAGE WRAPPER (WIDER ⭐)
+===================== */
+
+.adminPage{
+  width: 100%;
+  padding: 14px;
+  box-sizing: border-box;
+  color: var(--text);
+
+  /* ⭐ THIS MAKES IT WIDE */
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+/* =====================
+   HERO
+===================== */
+
+.adminHero{
+  width: 100%;
+  border-radius: 28px;
+  padding: 44px 42px;
+  color: #fff;
+  background: linear-gradient(90deg, #6b7cff, #7a4aa8);
+  box-shadow: 0 20px 60px rgba(0,0,0,.28);
+  position: relative;
+  overflow: hidden;
+}
+
+/* diagonal premium stripes */
+.adminHero::after{
+  content:"";
+  position:absolute;
+  inset:-40px;
+  background: repeating-linear-gradient(
+    135deg,
+    rgba(255,255,255,.10),
+    rgba(255,255,255,.10) 18px,
+    rgba(255,255,255,0) 18px,
+    rgba(255,255,255,0) 36px
+  );
+  opacity: .25;
+  pointer-events: none;
+}
+
+.adminHeroText{
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+}
+
+.adminHero h1{
+  margin: 0;
+  font-size: 56px;
+  font-weight: 1000;
+  letter-spacing: .2px;
+}
+
+.adminHero p{
+  margin: 12px 0 0;
+  font-size: 18px;
+  opacity: .92;
+}
+
+.adminHeroPill{
+  margin-top: 18px;
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.18);
+  border: 1px solid rgba(255,255,255,.26);
+  font-weight: 900;
+}
+
+/* =====================
+   STATS ROW
+===================== */
+
+.adminStats{
+  margin-top: 18px;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.adminStatCard{
+  background: rgba(255,255,255,.92);
+  border-radius: 20px;
+  border: 1px solid rgba(0,0,0,.06);
+  box-shadow: 0 10px 26px rgba(0,0,0,.12);
+  padding: 18px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #111;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+/* ✨ premium hover */
+.adminStatCard:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(0,0,0,.18);
+}
+
+.adminStatIcon{
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.06);
+  border: 1px solid rgba(0,0,0,.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.adminStatLabel{
+  font-size: 12px;
+  font-weight: 1000;
+  letter-spacing: .35px;
+  opacity: .70;
+}
+
+.adminStatValue{
+  margin-top: 6px;
+  font-size: 22px;
+  font-weight: 1000;
+}
+
+/* =====================
+   PANELS ROW
+===================== */
+
+.adminRow{
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 20px;
+}
+
+.adminPanel{
+  background: rgba(255,255,255,.92);
+  border-radius: 26px;
+  padding: 20px 20px;
+  box-shadow: 0 18px 55px rgba(0,0,0,.18);
+  border: 1px solid rgba(0,0,0,.06);
+  color: #111;
+}
+
+.adminPanelHead{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.adminPanelHead h2{
+  margin: 0;
+  font-size: 20px;
+  font-weight: 1000;
+}
+
+.adminPanelMeta{
+  font-size: 12px;
+  font-weight: 900;
+  opacity: .70;
+}
+
+/* =====================
+   QUICK ACTIONS
+===================== */
+
+.adminActions{
+  display:flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.adminAction{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(0,0,0,.08);
+  background: #fff;
+  transition: background .15s ease, transform .15s ease;
+}
+
+.adminAction:hover{
+  background: rgba(0,0,0,.04);
+  transform: translateY(-2px);
+}
+
+.adminActionLeft{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+}
+
+.adminActionIcon{
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.06);
+  border: 1px solid rgba(0,0,0,.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 18px;
+}
+
+.adminActionTitle{
+  font-weight: 1000;
+}
+
+.adminActionDesc{
+  font-size: 13px;
+  opacity: .70;
+  margin-top: 2px;
+}
+
+/* =====================
+   GO BUTTON
+===================== */
+
+.adminGoBtn{
+  text-decoration:none;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(0,0,0,.03);
+  font-weight: 1000;
+  color: #111;
+  transition: background .15s ease;
+}
+
+.adminGoBtn:hover{
+  background: rgba(0,0,0,.08);
+}
+
+/* =====================
+   EMPTY STATE
+===================== */
+
+.adminEmpty{
+  height: 240px;
+  border-radius: 20px;
+  border: 1px dashed rgba(0,0,0,.18);
+  background: rgba(0,0,0,.02);
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content:center;
+  text-align: center;
+  padding: 18px;
+}
+
+.adminEmptyIcon{
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+.adminEmptyText{
+  font-weight: 1000;
+}
+
+.adminEmptySub{
+  margin-top: 6px;
+  opacity: .70;
+  font-size: 13px;
+}
+
+/* =====================
+   RESPONSIVE
+===================== */
+
+@media (max-width: 1200px){
+  .adminStats{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .adminRow{
+    grid-template-columns: 1fr;
+  }
+
+  .adminHero h1{
+    font-size: 44px;
+  }
+}
+
+@media (max-width: 700px){
+  .adminHero{
+    padding: 28px 18px;
+  }
+
+  .adminHero h1{
+    font-size: 32px;
+  }
+
+  .adminStats{
+    grid-template-columns: 1fr;
+  }
+}

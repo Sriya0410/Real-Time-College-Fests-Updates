@@ -1,0 +1,158 @@
+/* ===============================
+   LOST & FOUND RECEIPT (NEAT UI)
+   =============================== */
+
+.lfReceiptWrap{
+  margin-top: 18px;
+  display:flex;
+  justify-content:center;
+  padding: 10px 0 30px;
+}
+
+.lfReceiptOuter{
+  width: 100%;
+  max-width: 560px;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.35);
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.lfReceiptPaper{
+  width: 360px;
+  max-width: 100%;
+  margin: 0 auto;
+  background: #ffffff;
+  color: #0b1220;
+  border-radius: 14px;
+  border: 1px solid rgba(2,6,23,.12);
+  padding: 16px 14px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  line-height: 1.35;
+  box-shadow: 0 10px 25px rgba(0,0,0,.18);
+}
+
+/* subtle paper header */
+.lfReceiptPaper::before{
+  content:"";
+  display:block;
+  height:8px;
+  margin:-16px -14px 10px;
+  border-radius:14px 14px 0 0;
+  background: linear-gradient(to right,
+    rgba(0,0,0,0.08) 0%,
+    rgba(0,0,0,0.02) 18%,
+    rgba(0,0,0,0.08) 36%,
+    rgba(0,0,0,0.02) 54%,
+    rgba(0,0,0,0.08) 72%,
+    rgba(0,0,0,0.02) 90%,
+    rgba(0,0,0,0.08) 100%
+  );
+}
+
+/* text helpers */
+.lfCenter{ text-align:center; }
+.lfBold{ font-weight: 900; }
+.lfMuted{ opacity: .75; }
+.lfSmall{ font-size: 11px; }
+
+.lfBrand{
+  font-size: 14px;
+  letter-spacing: .6px;
+}
+
+/* dashed separator */
+.lfLine{
+  border-top: 1px dashed rgba(2,6,23,.55);
+  margin: 10px 0;
+}
+
+/* 2 columns row */
+.lfRow2{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+/* key/value lines */
+.lfKV{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-top: 6px;
+}
+
+.lfDesc{
+  max-width: 230px;
+  text-align: right;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* image inside receipt */
+.lfReceiptImg{
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(2,6,23,.10);
+  margin-top: 8px;
+}
+
+/* action buttons */
+.lfReceiptActions{
+  margin-top: 12px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.lfReceiptActions .btnSmall2{
+  min-width: 120px;
+  height: 40px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration: none !important;
+}
+
+/* ===============================
+   PRINT ONLY (Receipt)
+   =============================== */
+@media print{
+  body{
+    background: #fff !important;
+  }
+
+  /* hide everything */
+  body *{
+    visibility: hidden !important;
+  }
+
+  /* show only receipt */
+  #lf-receipt, #lf-receipt *{
+    visibility: visible !important;
+  }
+
+  /* position on paper */
+  #lf-receipt{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 320px !important;
+    padding: 10px 10px !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  /* keep exact print colors */
+  *{
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

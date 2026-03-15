@@ -1,0 +1,342 @@
+/* =====================
+   ROOT COLORS (match student theme)
+===================== */
+
+:root{
+  --student-surface: #0d1430;
+
+  /* stronger borders */
+  --border: rgba(255,255,255,.18);
+  --border-strong: rgba(255,255,255,.30);
+
+  /* brighter text */
+  --text: rgba(255,255,255,.96);
+  --muted: rgba(255,255,255,.82);
+
+  --accent: #7c5cff;
+
+  /* NEW: glass surfaces */
+  --glass-1: rgba(255,255,255,.08);
+  --glass-2: rgba(255,255,255,.06);
+  --glass-3: rgba(255,255,255,.04);
+}
+
+/* =====================
+   IMPORTANT: DARK PAGE BACKGROUND (fix washed out UI)
+===================== */
+
+/* If this CSS file is global, this will fix the whole page */
+body{
+background:
+  radial-gradient(1200px 600px at 10% 0%, rgba(124, 92, 255, 0.10), transparent 60%),
+  radial-gradient(1000px 600px at 90% 10%, rgba(107, 124, 255, 0.08), transparent 55%),
+  #f6f8ff;
+  color: var(--text);
+}
+
+/* If you don't want to affect the whole site, keep body as-is
+   and ONLY use the .adminPage background below */
+
+/* =====================
+   PAGE WRAPPER — FULL WIDTH
+===================== */
+
+.adminPage{
+  width: 100%;
+  padding: 18px 24px;
+  box-sizing: border-box;
+  color: var(--text);
+
+  max-width: none;
+  margin: 0;
+
+  /* NEW: ensure dashboard area is dark even if body is white */
+  min-height: 100vh;
+  background: radial-gradient(1200px 600px at 10% 0%, rgba(124,92,255,.20), transparent 60%),
+              radial-gradient(1000px 600px at 90% 10%, rgba(107,124,255,.18), transparent 55%),
+              var(--student-surface);
+  border-radius: 0;
+}
+
+/* =====================
+   HERO
+===================== */
+
+.adminHero{
+  width: 100%;
+  border-radius: 28px;
+  padding: 48px 48px;
+  color: #fff;
+
+  background: linear-gradient(135deg, #6b7cff, #7a4aa8);
+  box-shadow: 0 25px 70px rgba(0,0,0,.35);
+}
+
+.adminHeroText h1{
+  margin: 0;
+  font-size: 56px;
+  font-weight: 1000;
+  letter-spacing: .3px;
+  text-shadow: 0 2px 10px rgba(0,0,0,.35);
+}
+
+.adminHeroText p{
+  margin: 14px 0 0;
+  font-size: 18px;
+  color: rgba(255,255,255,.95);
+  font-weight: 500;
+}
+
+.adminHeroPill{
+  margin-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.18);
+  border: 1px solid rgba(255,255,255,.28);
+  font-weight: 900;
+  text-shadow: 0 1px 6px rgba(0,0,0,.25);
+}
+
+.adminHeroPillIcon{
+  font-size: 16px;
+}
+
+/* =====================
+   STATS GRID
+===================== */
+
+.adminStats{
+  margin-top: 22px;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.adminStatCard{
+  background: var(--glass-2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 18px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  backdrop-filter: blur(10px);
+  transition: .2s ease;
+}
+
+.adminStatCard:hover{
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  background: var(--glass-1);
+}
+
+.adminStatIcon{
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+
+  background: rgba(255,255,255,.12);
+  border: 1px solid var(--border);
+}
+
+.adminStatLabel{
+  font-size: 13px;
+  color: rgba(255,255,255,.90);
+  font-weight: 800;
+}
+
+.adminStatValue{
+  font-size: 22px;
+  font-weight: 1000;
+  margin-top: 2px;
+  color: var(--text);
+  text-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+
+/* =====================
+   MAIN ROW
+===================== */
+
+.adminRow{
+  margin-top: 22px;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1.1fr .9fr;
+}
+
+/* =====================
+   PANELS
+===================== */
+
+.adminPanel{
+  background: var(--glass-2);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 20px 20px;
+
+  backdrop-filter: blur(12px);
+}
+
+.adminPanelHead{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.adminPanelHead h2{
+  margin: 0;
+  font-size: 22px;
+  font-weight: 1000;
+  color: var(--text);
+  text-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+
+.adminPanelMeta{
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+/* =====================
+   ACTIONS
+===================== */
+
+.adminActions{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.adminAction{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: var(--glass-3);
+
+  transition: .2s ease;
+}
+
+.adminAction:hover{
+  background: var(--glass-1);
+  border-color: var(--border-strong);
+}
+
+.adminActionLeft{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.adminActionIcon{
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+
+  background: rgba(255,255,255,.12);
+  border: 1px solid var(--border);
+}
+
+.adminActionTitle{
+  font-weight: 1000;
+  color: var(--text);
+}
+
+.adminActionDesc{
+  font-size: 13px;
+  color: rgba(255,255,255,.85);
+  margin-top: 2px;
+}
+
+.adminGoBtn{
+  text-decoration: none;
+  font-weight: 1000;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: #fff;
+  background: rgba(255,255,255,.08);
+  transition: .2s ease;
+}
+
+.adminGoBtn:hover{
+  background: rgba(124,92,255,.30);
+  border-color: var(--accent);
+}
+
+/* =====================
+   EMPTY STATE
+===================== */
+
+.adminEmpty{
+  margin-top: 10px;
+  padding: 40px 20px;
+  border-radius: 18px;
+  border: 2px dashed rgba(255,255,255,.22);
+  text-align: center;
+  color: var(--text);
+}
+
+.adminEmptyIcon{
+  font-size: 40px;
+}
+
+.adminEmptyText{
+  margin-top: 10px;
+  font-weight: 1000;
+}
+
+.adminEmptySub{
+  margin-top: 6px;
+  font-size: 13px;
+  color: rgba(255,255,255,.82);
+}
+
+/* =====================
+   RESPONSIVE
+===================== */
+
+@media (max-width: 1200px){
+  .adminStats{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .adminRow{
+    grid-template-columns: 1fr;
+  }
+
+  .adminHeroText h1{
+    font-size: 42px;
+  }
+}
+
+@media (max-width: 640px){
+  .adminStats{
+    grid-template-columns: 1fr;
+  }
+
+  .adminHero{
+    padding: 28px 20px;
+  }
+
+  .adminHeroText h1{
+    font-size: 32px;
+  }
+}

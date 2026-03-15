@@ -1,0 +1,222 @@
+/* page background should match your student layout background */
+.eventsPage2{
+  width: 100%;
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+/* HERO */
+.eventsHero2{
+  width: 100%;
+  border-radius: 28px;
+  padding: 44px 42px;
+  color: #fff;
+  background: linear-gradient(90deg, #6b7cff, #7a4aa8);
+  box-shadow: 0 20px 60px rgba(0,0,0,.28);
+}
+
+.eventsHero2 h1{
+  margin: 0;
+  font-size: 56px;
+  font-weight: 1000;
+  letter-spacing: .2px;
+}
+
+.eventsHero2 p{
+  margin: 12px 0 0;
+  font-size: 18px;
+  opacity: .92;
+}
+
+.todayPill2{
+  margin-top: 18px;
+  display: inline-flex;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.18);
+  border: 1px solid rgba(255,255,255,.26);
+  font-weight: 900;
+}
+
+/* FILTER CARD */
+.filtersPanel2{
+  margin-top: 18px;
+  background: rgba(255,255,255,.92);
+  border-radius: 26px;
+  padding: 22px 22px;
+  box-shadow: 0 18px 55px rgba(0,0,0,.18);
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+.search2{
+  width: 100%;
+  padding: 16px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.10);
+  outline: none;
+  font-size: 15px;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.filtersRow2{
+  margin-top: 16px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.select2{
+  min-width: 210px;
+  padding: 14px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: #fff;
+  outline: none;
+  font-weight: 700;
+}
+
+.check2{
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  color: rgba(0,0,0,.70);
+}
+
+.check2 input{
+  width: 18px;
+  height: 18px;
+}
+
+.reset2{
+  padding: 14px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: #fff;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.reset2:hover{
+  background: rgba(0,0,0,.04);
+}
+
+/* SECTION TITLE */
+.allWrap2{
+  margin-top: 34px;
+}
+
+.allHead2{
+  margin-bottom: 18px;
+}
+
+.allTitle2{
+  font-size: 34px;
+  font-weight: 1000;
+  color: #fff;
+  letter-spacing: .3px;
+}
+
+.allTitle2 span{
+  font-size: 18px;
+  font-weight: 900;
+  opacity: .75;
+  margin-left: 8px;
+}
+
+.allLine2{
+  margin-top: 12px;
+  height: 4px;
+  width: 150px;
+  border-radius: 999px;
+  background: #2f65ff;
+}
+
+/* DATE BLOCK */
+.dateBlock2{
+  margin-top: 26px;
+}
+
+.dateTitle2{
+  margin-bottom: 18px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.18);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 1000;
+  letter-spacing: .2px;
+  backdrop-filter: blur(10px);
+}
+
+/* GRID */
+.grid2{
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 992px){
+  .grid2{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px){
+  .grid2{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* MESSAGE CARD */
+.msg2{
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  color: rgba(255,255,255,.92);
+}
+
+/* TABLET */
+@media (max-width: 992px){
+  .grid2{
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .eventsHero2 h1{
+    font-size: 44px;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 700px){
+  .grid2{
+    grid-template-columns: 1fr;
+  }
+
+  .eventsHero2{
+    padding: 28px 18px;
+  }
+
+  .eventsHero2 h1{
+    font-size: 32px;
+  }
+
+  .filtersPanel2{
+    padding: 16px;
+  }
+
+  .check2{
+    margin-left: 0;
+  }
+
+  .dateTitle2{
+    font-size: 17px;
+    padding: 12px 14px;
+  }
+}

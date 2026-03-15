@@ -1,0 +1,100 @@
+.tBack{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.65);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index: 999;
+  padding: 16px;
+}
+.tCard{
+  width: min(640px, 100%);
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 16px;
+}
+.tHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.tTitle{ font-weight: 1000; font-size: 18px; color:#111; }
+.tClose{
+  border: 0;
+  background: rgba(0,0,0,.08);
+  border-radius: 10px;
+  padding: 8px 10px;
+  cursor:pointer;
+}
+
+.tMsg{ padding: 12px; color:#111; }
+.tErr{
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255,0,0,.12);
+  border: 1px solid rgba(255,0,0,.25);
+  color:#111;   /* ✅ dark text visible */
+  font-weight:700;
+}
+
+.tTicket{
+  margin-top: 12px;
+  border: 1px dashed rgba(0,0,0,.25);
+  border-radius: 16px;
+  padding: 14px;
+}
+.tBrand{
+  font-weight: 1000;
+  color: #6b7cff;
+  letter-spacing: .6px;
+}
+.tEvent{
+  font-weight: 1000;
+  font-size: 20px;
+  margin-top: 6px;
+  color:#111;
+}
+.tRows{
+  margin-top: 10px;
+  display:grid;
+  gap:6px;
+  color:#111;
+}
+.tQRWrap{
+  margin-top: 14px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+}
+.tQR{
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 14px;
+  padding: 10px;
+}
+.tSmall{ color: rgba(0,0,0,.65); font-weight: 700; }
+
+.tActions{
+  display:flex;
+  gap:10px;
+  margin-top: 12px;
+  justify-content:flex-end;
+}
+.tBtn{
+  border: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-weight: 1000;
+  cursor:pointer;
+  background: linear-gradient(90deg,#6b7cff,#7a4aa8);
+  color:#fff;
+}
+.tBtn.ghost{
+  background: rgba(0,0,0,.08);
+  color:#111;
+}

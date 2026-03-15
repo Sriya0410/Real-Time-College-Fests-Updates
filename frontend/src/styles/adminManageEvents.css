@@ -1,0 +1,314 @@
+/* ===============================
+   MANAGE EVENTS — LIGHT CONTENT
+   Works inside DARK admin shell
+================================= */
+
+.amePage{
+  padding: 22px;
+  color:#0b1220;
+}
+
+/* ===============================
+   HEADER
+================================= */
+
+.ameHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+
+.ameHeader h1{
+  margin:0;
+  font-size:28px;
+  font-weight:900;
+  color:#000;
+}
+
+.ameHeader p{
+  margin:4px 0 0;
+  color:#475569;
+  font-weight:600;
+}
+
+.ameActions{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+/* ===============================
+   SEARCH
+================================= */
+
+.ameSearch{
+  min-width:260px;
+  padding:12px 16px;
+  border-radius:999px;
+  border:1px solid #cbd5e1;
+  background:#ffffff;
+  color:#000;
+  font-weight:700;
+  outline:none;
+}
+
+.ameSearch::placeholder{
+  color:#94a3b8;
+}
+
+/* ===============================
+   GRID
+================================= */
+
+.ameGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(420px,1fr));
+  gap:18px;
+}
+
+/* ===============================
+   CARD
+================================= */
+
+.ameCard{
+  background:#ffffff;
+  border:1px solid #e2e8f0;
+  border-radius:20px;
+  padding:18px;
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
+  transition:.18s ease;
+}
+
+.ameCard:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 32px rgba(0,0,0,.12);
+}
+
+.ameTitle{
+  font-size:20px;
+  font-weight:900;
+  color:#000;
+  margin-bottom:6px;
+}
+
+.ameMeta{
+  color:#334155;
+  font-weight:600;
+  font-size:14px;
+  margin-bottom:6px;
+}
+
+/* ===============================
+   BUTTONS
+================================= */
+
+.ameBtns{
+  display:flex;
+  gap:14px;
+  margin-top:14px;
+}
+
+.ameBtn{
+  flex:1;
+  padding:12px;
+  border-radius:14px;
+  border:1px solid #cbd5e1;
+  background:#ffffff;
+  color:#000;
+  font-weight:900;
+  cursor:pointer;
+  transition:.15s ease;
+}
+
+.ameBtn:hover{
+  background:#f1f5f9;
+}
+
+/* delete button */
+
+.ameBtn.danger{
+  background:#fee2e2;
+  color:#b91c1c;
+  border:1px solid #fca5a5;
+}
+
+.ameBtn.danger:hover{
+  background:#fecaca;
+}
+
+/* ===============================
+   REFRESH BUTTON
+================================= */
+
+.btnSmall2{
+  padding:10px 16px;
+  border-radius:14px;
+  border:1px solid #0f172a;
+  background:#0f172a;
+  color:#ffffff;
+  font-weight:900;
+  cursor:pointer;
+  transition:.15s ease;
+  white-space:nowrap;
+}
+
+.btnSmall2:hover{
+  background:#1e293b;
+}
+
+.btnSmall2:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+/* ===============================
+   MESSAGE
+================================= */
+
+.ameMsg{
+  background:#ffffff;
+  border:1px solid #e2e8f0;
+  padding:14px;
+  border-radius:14px;
+  font-weight:700;
+  color:#111827;
+  margin-bottom:14px;
+}
+
+.ameMsg.error{
+  background:#fee2e2;
+  border-color:#fca5a5;
+  color:#991b1b;
+}
+
+/* ===============================
+   MODAL
+================================= */
+
+.ameModalBackdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:200;
+  padding:16px;
+}
+
+.ameModal{
+  width:100%;
+  max-width:640px;
+  background:#ffffff;
+  border-radius:20px;
+  padding:20px;
+  box-shadow:0 30px 80px rgba(0,0,0,.35);
+  color:#000;
+}
+
+.ameModalHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+
+.ameModalTitle{
+  font-size:20px;
+  font-weight:900;
+}
+
+/* ===============================
+   FORM
+================================= */
+
+.ameForm{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.ameForm label{
+  font-weight:800;
+  color:#0f172a;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.ameForm input,
+.ameForm textarea,
+.ameForm select{
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid #cbd5e1;
+  background:#ffffff;
+  color:#000;
+  font-weight:600;
+  outline:none;
+}
+
+.ameForm input:focus,
+.ameForm textarea:focus,
+.ameForm select:focus{
+  border-color:#7c5cff;
+  box-shadow:0 0 0 2px rgba(124,92,255,.15);
+}
+
+/* two column rows */
+
+.ameRow2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+/* footer */
+
+.ameModalFoot{
+  display:flex;
+  gap:12px;
+  margin-top:10px;
+}
+
+/* ===============================
+   MOBILE
+================================= */
+
+@media (max-width:768px){
+
+  .ameGrid{
+    grid-template-columns:1fr;
+  }
+
+  .ameRow2{
+    grid-template-columns:1fr;
+  }
+
+  .ameHeader{
+    align-items:flex-start;
+  }
+
+  .ameSearch{
+    min-width:200px;
+    width:100%;
+  }
+}
+
+/* ===== FORCE REFRESH BUTTON VISIBILITY ===== */
+.ameActions .btnSmall2{
+  background:#0f172a !important;
+  color:#ffffff !important;
+  border:1px solid #0f172a !important;
+  font-weight:900 !important;
+  box-shadow:0 4px 14px rgba(15,23,42,.25);
+}
+
+.ameActions .btnSmall2:hover{
+  background:#1e293b !important;
+  border-color:#1e293b !important;
+}

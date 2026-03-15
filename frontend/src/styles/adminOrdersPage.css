@@ -1,0 +1,278 @@
+:root{
+  --student-surface: #0d1430;
+  --border: rgba(255,255,255,.18);
+  --border-strong: rgba(255,255,255,.30);
+  --text: rgba(255,255,255,.96);
+  --muted: rgba(255,255,255,.78);
+  --accent: #7c5cff;
+
+  --glass-1: rgba(255,255,255,.10);
+  --glass-2: rgba(255,255,255,.07);
+  --glass-3: rgba(255,255,255,.05);
+}
+
+/* ================= PAGE ================= */
+
+.adminOrdersPage{
+  width: 100%;
+  padding: 18px 24px;
+  box-sizing: border-box;
+  min-height: 100vh;
+  color: var(--text);
+  background:
+    radial-gradient(1200px 600px at 10% 0%, rgba(124, 92, 255, 0.18), transparent 60%),
+    radial-gradient(1000px 600px at 90% 10%, rgba(107, 124, 255, 0.14), transparent 55%),
+    var(--student-surface);
+}
+
+/* ================= HEADER ================= */
+
+.adminOrdersHeader{
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.adminOrdersTitle{
+  margin: 0;
+  font-size: 34px;
+  font-weight: 1000;
+}
+
+.adminOrdersSub{
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+/* ================= MESSAGE ================= */
+
+.adminMsg{
+  margin: 10px 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.06);
+}
+
+.adminMsg.error{
+  border-color: rgba(255, 120, 120, .35);
+  color: #ffd1d1;
+}
+
+/* ================= FILTERS ================= */
+
+.adminOrdersFilters{
+  display: grid;
+  grid-template-columns: 1.2fr .4fr .4fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.adminInput,
+.adminSelect{
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.08);
+  color: var(--text);
+  padding: 0 14px;
+  outline: none;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.adminInput::placeholder{
+  color: rgba(255,255,255,.70);
+}
+
+/* ================= TABLE CARD ================= */
+
+.adminOrdersCard{
+  border: 1px solid var(--border);
+  background: var(--glass-2);
+  border-radius: 18px;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+
+.adminOrdersTable{
+  display: grid;
+  grid-template-columns: 1.1fr 1.2fr 1.1fr .6fr 1.1fr .8fr 1.2fr;
+}
+
+.th{
+  padding: 14px;
+  font-size: 12px;
+  font-weight: 1000;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.85);
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,.06);
+}
+
+.tr{ display: contents; }
+
+.td{
+  padding: 14px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+
+.strong{ font-weight: 1000; }
+.idLine{ font-weight: 1000; }
+.mutedLine{ font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+/* ================= PAYMENT TAGS ================= */
+
+.payRow{ display: flex; flex-wrap: wrap; gap: 8px; }
+
+.payTag{
+  font-size: 11px;
+  font-weight: 1000;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.06);
+}
+
+.payTag.paid{
+  border-color: rgba(0,255,170,.30);
+  background: rgba(0,255,170,.12);
+}
+
+.payTag.unpaid{
+  border-color: rgba(255,220,120,.35);
+  background: rgba(255,220,120,.12);
+}
+
+/* ================= STATUS ================= */
+
+.statusPill{
+  display: inline-flex;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-weight: 1000;
+  font-size: 11px;
+  background: rgba(255,255,255,.06);
+}
+
+.status-placed{ background: rgba(124,92,255,.14); border-color: rgba(124,92,255,.30); }
+.status-accepted{ background: rgba(80,200,255,.14); border-color: rgba(80,200,255,.30); }
+.status-ready{ background: rgba(255,220,120,.14); border-color: rgba(255,220,120,.30); }
+.status-completed{ background: rgba(0,255,170,.12); border-color: rgba(0,255,170,.30); }
+.status-cancelled{ background: rgba(255,120,120,.12); border-color: rgba(255,120,120,.30); }
+
+/* ================= ACTIONS ================= */
+
+.actions{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.miniBtn{
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.08);
+  color: var(--text);
+  font-weight: 1000;
+  cursor: pointer;
+}
+
+.miniBtn:hover{
+  background: rgba(124,92,255,.26);
+  border-color: rgba(124,92,255,.40);
+}
+
+/* ================= DROPDOWN FIX (IMPORTANT) ================= */
+
+.miniSelect{
+  height: 34px;
+  padding: 0 34px 0 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.08);
+  color: var(--text);
+  font-weight: 900;
+  outline: none;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  /* custom arrow */
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(255,255,255,.85) 50%),
+    linear-gradient(135deg, rgba(255,255,255,.85) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) calc(50% - 2px),
+    calc(100% - 12px) calc(50% - 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+/* dropdown menu colors */
+.adminSelect option,
+.miniSelect option{
+  background: #101a3a;
+  color: #ffffff;
+}
+
+/* focus glow */
+.adminSelect:focus,
+.miniSelect:focus{
+  border-color: rgba(124,92,255,.55);
+  box-shadow: 0 0 0 3px rgba(124,92,255,.20);
+}
+
+/* ================= EMPTY ================= */
+
+.adminEmpty2{
+  grid-column: 1 / -1;
+  padding: 18px;
+  color: var(--muted);
+}
+
+/* ================= BUTTON ================= */
+
+.btnSmall2{
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.08);
+  color: var(--text);
+  font-weight: 1000;
+  cursor: pointer;
+}
+
+.btnSmall2:hover{
+  background: rgba(124,92,255,.25);
+  border-color: rgba(124,92,255,.35);
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1100px){
+  .adminOrdersFilters{ grid-template-columns: 1fr; }
+  .adminOrdersTable{
+    grid-template-columns: 1.2fr 1.2fr 1.1fr .7fr 1.1fr 1fr 1.2fr;
+  }
+}
+
+@media (max-width: 860px){
+  .adminOrdersTable{ grid-template-columns: 1fr; }
+  .th{ display: none; }
+  .td{ border-bottom: 1px solid rgba(255,255,255,.10); }
+  .tr{ display: grid; grid-template-columns: 1fr; }
+}

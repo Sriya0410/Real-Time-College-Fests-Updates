@@ -1,0 +1,525 @@
+/* =========================
+   Analytics Page
+========================= */
+
+.anPage{
+  width: 100%;
+  padding: 18px;
+  box-sizing: border-box;
+  min-height: calc(100vh - 84px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at top right, rgba(124,92,255,.08), transparent 22%),
+    linear-gradient(180deg, #f6f8ff 0%, #eef2ff 42%, #ffffff 100%);
+}
+
+/* =========================
+   Header
+========================= */
+
+.anHead{
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  align-items: flex-start;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding: 12px 0;
+  backdrop-filter: blur(12px);
+  background: linear-gradient(to bottom, rgba(246,248,255,.96), rgba(246,248,255,.70), rgba(246,248,255,0));
+}
+
+.anTitle{
+  margin: 0;
+  font-size: 30px;
+  font-weight: 1000;
+  letter-spacing: -.02em;
+  color: #0f172a;
+}
+
+.anSub{
+  margin-top: 6px;
+  color: rgba(15, 23, 42, .68);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: .02em;
+}
+
+/* =========================
+   Controls
+========================= */
+
+.anControls{
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.anTabs{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.anTab{
+  border: 1px solid rgba(15, 23, 42, .10);
+  background: rgba(255,255,255,.86);
+  color: #0f172a;
+  font-weight: 900;
+  padding: 13px 20px;
+  border-radius: 18px;
+  cursor: pointer;
+  transition: transform .18s ease, background .18s ease, box-shadow .18s ease, border-color .18s ease;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px rgba(15,23,42,.05);
+}
+
+.anTab:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(15,23,42,.08);
+}
+
+.anTab.active{
+  background: linear-gradient(180deg, rgba(124,92,255,.18), rgba(124,92,255,.12));
+  border-color: rgba(124,92,255,.38);
+  color: #3822e2;
+}
+
+/* =========================
+   Custom Dropdown
+========================= */
+
+.anDropdown{
+  position: relative;
+  min-width: 340px;
+  width: 340px;
+}
+
+.anDropdownBtn{
+  width: 100%;
+  border: 1px solid rgba(15, 23, 42, .10);
+  background: rgba(255,255,255,.92);
+  color: #0f172a;
+  border-radius: 18px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(15,23,42,.06);
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+.anDropdownBtn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(15,23,42,.08);
+}
+
+.anDropdownBtn.open{
+  border-color: rgba(124,92,255,.28);
+  box-shadow: 0 14px 32px rgba(124,92,255,.10);
+}
+
+.anDropdownText{
+  font-weight: 900;
+  font-size: 15px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.anDropdownArrow{
+  font-size: 18px;
+  line-height: 1;
+  color: rgba(15,23,42,.72);
+  transition: transform .2s ease;
+}
+
+.anDropdownArrow.open{
+  transform: rotate(180deg);
+}
+
+.anDropdownMenu{
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  width: 100%;
+  max-height: 380px;
+  overflow-y: auto;
+  border: 1px solid rgba(15, 23, 42, .10);
+  background: rgba(255,255,255,.98);
+  border-radius: 20px;
+  box-shadow: 0 22px 46px rgba(15, 23, 42, .14);
+  z-index: 40;
+  padding: 10px;
+  scrollbar-width: thin;
+}
+
+.anDropdownMenu::-webkit-scrollbar{
+  width: 8px;
+}
+
+.anDropdownMenu::-webkit-scrollbar-thumb{
+  background: rgba(15,23,42,.18);
+  border-radius: 999px;
+}
+
+.anDropdownMenu::-webkit-scrollbar-track{
+  background: transparent;
+}
+
+.anDropdownGroup{
+  padding-bottom: 8px;
+}
+
+.anDropdownGroup:not(:last-child){
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(15, 23, 42, .07);
+}
+
+.anDropdownGroupLabel{
+  position: sticky;
+  top: -10px;
+  background: linear-gradient(180deg, #eef2ff, #f8faff);
+  color: #334155;
+  font-weight: 1000;
+  font-size: 13px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  box-shadow: inset 0 0 0 1px rgba(15,23,42,.04);
+}
+
+.anDropdownItem{
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 11px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: background .16s ease, transform .16s ease;
+}
+
+.anDropdownItem:hover{
+  background: rgba(124,92,255,.08);
+  transform: translateX(2px);
+}
+
+.anDropdownItem.active{
+  background: linear-gradient(180deg, rgba(124,92,255,.18), rgba(124,92,255,.10));
+  box-shadow: inset 0 0 0 1px rgba(124,92,255,.20);
+}
+
+.anDropdownItemTitle{
+  color: #0f172a;
+  font-weight: 900;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.anDropdownItemMeta{
+  color: rgba(15, 23, 42, .62);
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.anDropdownEmpty{
+  padding: 16px;
+  color: rgba(15, 23, 42, .68);
+  font-weight: 900;
+  text-align: center;
+}
+
+/* =========================
+   Error
+========================= */
+
+.anErr{
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(255, 99, 71, .10);
+  border: 1px solid rgba(255, 99, 71, .24);
+  color: #7f1d1d;
+  font-weight: 900;
+  box-shadow: 0 10px 24px rgba(255,99,71,.06);
+}
+
+/* =========================
+   Cards
+========================= */
+
+.anCard{
+  border: 1px solid rgba(15, 23, 42, .08);
+  background: rgba(255,255,255,.88);
+  border-radius: 22px;
+  padding: 16px;
+  box-shadow: 0 14px 34px rgba(15,23,42,.06);
+}
+
+.anCardHead{
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.anCardTitle{
+  font-weight: 1000;
+  color: #0f172a;
+  font-size: 16px;
+}
+
+.anCardMeta{
+  color: rgba(15, 23, 42, .72);
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.anNote{
+  margin-top: 12px;
+  color: rgba(15, 23, 42, .74);
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* =========================
+   Layout Grid
+========================= */
+
+.anGrid{
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 14px;
+}
+
+/* =========================
+   KPI Cards
+========================= */
+
+.anKpis{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.anKpi{
+  border: 1px solid rgba(15, 23, 42, .08);
+  background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.78));
+  border-radius: 18px;
+  padding: 15px 14px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.45);
+}
+
+.anKpiLabel{
+  color: rgba(15, 23, 42, .68);
+  font-weight: 900;
+  font-size: 12px;
+}
+
+.anKpiValue{
+  margin-top: 8px;
+  color: #0f172a;
+  font-weight: 1000;
+  font-size: 24px;
+}
+
+/* =========================
+   Charts
+========================= */
+
+.anCharts{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.anChart{
+  width: 100%;
+}
+
+.anChartTitle{
+  color: rgba(15, 23, 42, .90);
+  font-weight: 1000;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.anChartBox{
+  border: 1px solid rgba(15, 23, 42, .08);
+  background: rgba(255,255,255,.82);
+  border-radius: 18px;
+  padding: 12px;
+  min-height: 260px;
+}
+
+/* =========================
+   Form
+========================= */
+
+.anForm{
+  display: grid;
+  gap: 10px;
+}
+
+.anInput{
+  border: 1px solid rgba(15, 23, 42, .12);
+  background: rgba(255,255,255,.96);
+  color: #0f172a;
+  font-weight: 900;
+  padding: 11px 12px;
+  border-radius: 14px;
+  outline: none;
+}
+
+.anInput::placeholder{
+  color: rgba(15, 23, 42, .45);
+}
+
+.anBtn{
+  border: 1px solid rgba(124,92,255,.30);
+  background: rgba(124,92,255,.14);
+  color: #0f172a;
+  font-weight: 1000;
+  padding: 11px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: .15s ease;
+}
+
+.anBtn:hover{
+  transform: translateY(-1px);
+}
+
+/* =========================
+   Expense List
+========================= */
+
+.anList{
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.anRow{
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid rgba(15, 23, 42, .08);
+  background: rgba(255,255,255,.82);
+  border-radius: 16px;
+  padding: 11px 12px;
+}
+
+.anRowTitle{
+  color: #0f172a;
+  font-weight: 1000;
+}
+
+.anRowMeta{
+  color: rgba(15, 23, 42, .68);
+  font-weight: 800;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.anRowAmt{
+  color: #0f172a;
+  font-weight: 1000;
+  white-space: nowrap;
+}
+
+.anEmpty{
+  padding: 14px;
+  color: rgba(15, 23, 42, .70);
+  font-weight: 900;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 980px){
+  .anGrid{
+    grid-template-columns: 1fr;
+  }
+
+  .anKpis{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .anCharts{
+    grid-template-columns: 1fr;
+  }
+
+  .anControls{
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .anDropdown{
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .anTabs{
+    width: 100%;
+  }
+
+  .anTab{
+    flex: 1 1 auto;
+    text-align: center;
+  }
+}
+
+@media (max-width: 640px){
+  .anPage{
+    padding: 12px;
+  }
+
+  .anTitle{
+    font-size: 24px;
+  }
+
+  .anKpis{
+    grid-template-columns: 1fr;
+  }
+
+  .anControls{
+    width: 100%;
+  }
+
+  .anDropdown{
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .anDropdownMenu{
+    max-height: 300px;
+  }
+
+  .anRow{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .anRowAmt{
+    margin-top: 6px;
+  }
+}

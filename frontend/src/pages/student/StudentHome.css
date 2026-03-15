@@ -1,0 +1,133 @@
+/* =========================
+   PAGE WRAPPER
+========================= */
+
+.homeNoScroll{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* =========================
+   HERO IMAGE
+========================= */
+
+.homeHeroFull{
+  width: 100%;
+  height: 100%;
+  min-height: 520px;
+  border-radius: 22px;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* =========================
+   🔥 LOST & FOUND TICKER
+   (Continuous scroll - NO GAP)
+========================= */
+
+.heroTicker2{
+  position: absolute;
+  top: 22px;
+  left: 0;
+  right: 0;
+  width: 100%;
+
+  overflow: hidden;
+  white-space: nowrap;
+
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ✅ IMPORTANT: make it a continuous tape */
+.heroTickerTrack2{
+  display: flex;              /* ✅ was inline-block */
+  width: max-content;         /* ✅ track fits content width */
+  align-items: center;
+  gap: 18px;                  /* ✅ small spacing between messages (set 0 if you want totally no spacing) */
+
+  animation: heroTextScroll 28s linear infinite;
+  will-change: transform;
+}
+
+/* ✅ message style */
+.heroTickerItem2{
+  display: inline-flex;
+  align-items: center;
+
+  font-size: 15px;
+  font-weight: 1000;
+  letter-spacing: .2px;
+
+  color: rgba(255,255,255,.97);
+  text-shadow: 0 6px 18px rgba(0,0,0,.75);
+  opacity: .96;
+}
+
+/* ✅ smooth infinite scroll (works with duplicated list in JSX) */
+@keyframes heroTextScroll{
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* =========================
+   HERO CENTER CONTENT
+========================= */
+
+.homeHeroCenter{
+  text-align: center;
+  color: #fff;
+  max-width: 900px;
+  padding: 20px;
+  z-index: 1;
+}
+
+.heroMainTitle{
+  font-size: 42px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.heroBrand{
+  font-size: 84px;
+  font-weight: 1000;
+  margin: 8px 0 12px;
+  letter-spacing: 1px;
+}
+
+.heroSubtitle{
+  font-size: 20px;
+  opacity: 0.92;
+  line-height: 1.6;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px){
+  .heroMainTitle{ font-size: 28px; }
+  .heroBrand{ font-size: 48px; }
+  .heroSubtitle{ font-size: 15px; }
+
+  .heroTickerItem2{ font-size: 12px; }
+  .heroTickerTrack2{ gap: 12px; }
+  .heroTicker2{ top: 18px; }
+}
+
+/* accessibility */
+@media (prefers-reduced-motion: reduce){
+  .heroTickerTrack2{
+    animation: none;
+  }
+}

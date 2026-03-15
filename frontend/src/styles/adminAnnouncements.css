@@ -1,0 +1,146 @@
+/* Page */
+.aaPage {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 22px;
+  color: #0f172a; /* ✅ visible text */
+}
+
+/* Header */
+.aaHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.aaHeader h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.aaHeader p {
+  margin: 6px 0 0;
+  color: rgba(15, 23, 42, 0.7);
+  font-weight: 600;
+}
+
+.aaBadge {
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  background: rgba(15, 23, 42, 0.04);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  color: rgba(15, 23, 42, 0.8);
+}
+
+/* Alert */
+.aaAlert {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.08);
+  color: #b91c1c;
+  font-weight: 800;
+}
+
+/* Card */
+.aaCard {
+  margin-top: 16px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: #fff;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.06);
+}
+
+/* Fields */
+.aaField {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.aaField label {
+  font-weight: 900;
+  font-size: 13px;
+  color: rgba(15, 23, 42, 0.85);
+}
+
+.aaField input,
+.aaField textarea,
+.aaField select {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  background: #fff;
+  padding: 12px 12px;
+  outline: none;
+  color: #0f172a;
+  font-weight: 650;
+}
+
+.aaField input::placeholder,
+.aaField textarea::placeholder {
+  color: rgba(15, 23, 42, 0.45);
+}
+
+.aaField textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.aaHint {
+  font-size: 12px;
+  color: rgba(15, 23, 42, 0.6);
+  font-weight: 650;
+}
+
+/* Grid */
+.aaGrid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 820px) {
+  .aaGrid2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Actions */
+.aaActions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.aaBtn {
+  border: 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  background: linear-gradient(90deg, #2563eb, #7c3aed);
+  color: #fff;
+}
+
+.aaBtn:hover {
+  filter: brightness(1.03);
+}
+
+.aaBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.aaBtnGhost {
+  background: transparent;
+  color: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(15, 23, 42, 0.14);
+}

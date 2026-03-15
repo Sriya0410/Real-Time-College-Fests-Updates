@@ -1,0 +1,241 @@
+.ordersTopBar{
+  margin: 10px 0 14px;
+  display:flex;
+  justify-content:flex-end;
+}
+
+.ordersGrid{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+
+@media (max-width: 1200px){
+  .ordersGrid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px){
+  .ordersGrid{
+    grid-template-columns: 1fr;
+  }
+}
+
+.orderCard{
+  padding: 14px;
+  border-radius: 16px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.orderCard{
+  padding:14px;
+  border-radius:16px;
+}
+
+.orderHead{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+}
+
+.orderTitle{
+  font-size:16px;
+  font-weight:900;
+  color:white;
+}
+
+.orderItemsBox{
+  margin-top:12px;
+  padding-top:10px;
+  border-top:1px solid rgba(255,255,255,.08);
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.orderItemRow{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.orderItemLeft{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width: 0;
+}
+
+.orderItemName{
+  color:white;
+  font-weight:700;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width: 220px;
+}
+
+.orderItemRight{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.orderBottom{
+  margin-top:12px;
+  padding-top:10px;
+  border-top:1px solid rgba(255,255,255,.08);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.orderTotal{
+  color:white;
+  font-weight:900;
+}
+
+.orderNotes{
+  margin-top:10px;
+  font-size:13px;
+  opacity:.85;
+  color:white;
+  background: rgba(15,23,42,.25);
+  border: 1px solid rgba(255,255,255,.08);
+  padding:10px;
+  border-radius:12px;
+}
+
+/* status pill */
+.statusPill{
+  font-size:12px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.15);
+  color:white;
+  white-space:nowrap;
+}
+
+.status-placed{
+  background: rgba(59,130,246,.12);
+  border-color: rgba(59,130,246,.35);
+}
+.status-preparing{
+  background: rgba(245,158,11,.12);
+  border-color: rgba(245,158,11,.35);
+}
+.status-ready{
+  background: rgba(34,197,94,.12);
+  border-color: rgba(34,197,94,.35);
+}
+.status-delivered{
+  background: rgba(34,197,94,.12);
+  border-color: rgba(34,197,94,.35);
+}
+.status-cancelled{
+  background: rgba(239,68,68,.12);
+  border-color: rgba(239,68,68,.35);
+}
+
+/* veg dot small */
+.vegDot.small{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  border:2px solid rgba(255,255,255,.3);
+}
+.vegDot.veg{ background: rgba(34,197,94,.9); }
+.vegDot.nonveg{ background: rgba(239,68,68,.9); }
+
+.payInfo{
+  margin-top: 10px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.payTag{
+  font-size:12px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.15);
+  background: rgba(15,23,42,.35);
+  color:white;
+}
+
+.payTag.paid{
+  border-color: rgba(34,197,94,.4);
+  background: rgba(34,197,94,.12);
+}
+
+.payTag.unpaid{
+  border-color: rgba(245,158,11,.4);
+  background: rgba(245,158,11,.12);
+}
+
+.status-accepted{
+  background: rgba(245,158,11,.12);
+  border-color: rgba(245,158,11,.35);
+}
+.status-completed{
+  background: rgba(34,197,94,.12);
+  border-color: rgba(34,197,94,.35);
+}
+.status-pending_payment{
+  background: rgba(148,163,184,.12);
+  border-color: rgba(148,163,184,.35);
+}
+
+/* ===================================
+   ORDER ACTION BUTTONS — FINAL FIX
+   =================================== */
+
+.orderActions{
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+  align-items: stretch;
+}
+
+/* when both buttons */
+.orderActions.two{
+  grid-template-columns: 1fr 1fr;
+}
+
+/* when only receipt */
+.orderActions.one{
+  grid-template-columns: 1fr;
+}
+
+/* make link behave like button */
+.btnLink{
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+}
+
+/* ensure buttons same size */
+.orderActions .btnSmall2{
+  width: 100%;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* cancel button styling */
+.btnDanger{
+  border-color: rgba(239,68,68,.35) !important;
+  background: rgba(239,68,68,.10) !important;
+}
+.btnDanger:hover{
+  background: rgba(239,68,68,.18) !important;
+}
