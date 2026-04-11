@@ -23,7 +23,6 @@ export default function StudentLogin() {
     try {
       setLoading(true);
 
-      // ✅ optional: clear old student session only
       localStorage.removeItem("token");
       localStorage.removeItem("user");
 
@@ -82,10 +81,20 @@ export default function StudentLogin() {
                 autoComplete="current-password"
               />
               <button type="button" className="ev-eye" onClick={() => setShow((s) => !s)}>
-                👁
+                {show ? "🙈" : "👁"}
               </button>
             </div>
           </label>
+
+          <div className="ev-forgotRow">
+            <button
+              type="button"
+              className="ev-forgotBtn"
+              onClick={() => navigate("/forgot-password?role=student")}
+            >
+              Forgot Password?
+            </button>
+          </div>
 
           <button className="ev-primaryBtn" type="submit" disabled={loading}>
             {loading ? "Logging in..." : "→ Login as Student"}

@@ -33,8 +33,6 @@ export default function AdminLogin() {
       );
 
       const role = String(user?.role || "").toUpperCase();
-
-      // Allowed roles
       const allowedRoles = ["ADMIN", "STUDENT_AFFAIRS", "VOLUNTEER"];
 
       if (!allowedRoles.includes(role)) {
@@ -42,26 +40,22 @@ export default function AdminLogin() {
         return;
       }
 
-      // Role mismatch
       if (role !== rolePick) {
         setErr(`Your account role is ${role}. Please select ${role}.`);
         return;
       }
 
-      // Save token
       if (token) {
         localStorage.setItem("admin_token", token);
       }
 
-      // Redirect to dashboard
       const from = location.state?.from?.pathname;
       navigate(from || "/admin/dashboard", { replace: true });
-
     } catch (e2) {
       setErr(
         e2?.response?.data?.message ||
-        e2?.message ||
-        "Login failed. Please try again."
+          e2?.message ||
+          "Login failed. Please try again."
       );
     } finally {
       setLoading(false);
@@ -71,8 +65,6 @@ export default function AdminLogin() {
   return (
     <div className="ev-bg">
       <div className="ev-shell">
-
-        {/* Back Button */}
         <button
           className="ev-topBack"
           onClick={() => navigate("/", { replace: true })}
@@ -80,17 +72,13 @@ export default function AdminLogin() {
           ← Back to Home
         </button>
 
-        {/* Title */}
         <h2 className="ev-titleTop">Admin</h2>
         <h1 className="ev-titleBig">Login</h1>
         <div className="ev-neonLine" />
 
-        {/* Error Message */}
         {err && <div className="ev-error">{err}</div>}
 
         <form className="ev-form" onSubmit={submit}>
-
-          {/* Email */}
           <label className="ev-label">
             Admin Email
             <input
@@ -104,7 +92,22 @@ export default function AdminLogin() {
             />
           </label>
 
-          {/* Password */}
+          <label className="ev-label" style={{ marginTop: 14 }}>
+            Login As
+            <div className="ev-selectWrap">
+              <select
+                className="ev-select ev-select-dark"
+                value={rolePick}
+                onChange={(e) => setRolePick(e.target.value)}
+              >
+                <option value="ADMIN">Administrator</option>
+                <option value="STUDENT_AFFAIRS">Student Affairs</option>
+                <option value="VOLUNTEER">Volunteer</option>
+              </select>
+              <span className="ev-selectIcon">▼</span>
+            </div>
+          </label>
+
           <label className="ev-label" style={{ marginTop: 14 }}>
             Password
             <div className="ev-passRow">
@@ -129,29 +132,19 @@ export default function AdminLogin() {
             </div>
           </label>
 
-          {/* Role Selection */}
-          <label className="ev-label" style={{ marginTop: 14 }}>
-            Login As
-            <select
-  className="ev-select"
-  value={rolePick}
-  onChange={(e) => setRolePick(e.target.value)}
->
-  <option value="ADMIN">Administrator</option>
-  <option value="STUDENT_AFFAIRS">Student Affairs</option>
-  <option value="VOLUNTEER">Volunteer</option>
-</select>
-          </label>
+          <div className="ev-forgotRow">
+            <button
+              type="button"
+              className="ev-forgotBtn"
+              onClick={() => navigate("/forgot-password?role=admin")}
+            >
+              Forgot Password?
+            </button>
+          </div>
 
-          {/* Login Button */}
-          <button
-            className="ev-primaryBtn"
-            type="submit"
-            disabled={loading}
-          >
+          <button className="ev-primaryBtn" type="submit" disabled={loading}>
             {loading ? "Logging in..." : "→ Login"}
           </button>
-
         </form>
       </div>
     </div>

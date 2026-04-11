@@ -276,3 +276,10 @@
   .td{ border-bottom: 1px solid rgba(255,255,255,.10); }
   .tr{ display: grid; grid-template-columns: 1fr; }
 }
+
+.miniBtn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+}

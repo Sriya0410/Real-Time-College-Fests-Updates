@@ -16,11 +16,18 @@ function toDateTime(dateVal, timeVal) {
 }
 
 function formatDate(date) {
+  if (!date) return "-";
   return new Date(String(date).slice(0, 10)).toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "short",
     year: "numeric",
   });
+}
+
+function formatTimeRange(startTime, endTime) {
+  const start = startTime ? String(startTime).slice(0, 5) : "--:--";
+  const end = endTime ? String(endTime).slice(0, 5) : "";
+  return end ? `${start} - ${end}` : start;
 }
 
 export default function StudentCompletedEvents() {
@@ -44,7 +51,6 @@ export default function StudentCompletedEvents() {
 
       const nowMs = Date.now();
 
-      // ✅ completed means start time is over
       const completed = all.filter((ev) => {
         const start = toDateTime(ev.event_date, ev.start_time);
         if (!start) return false;
@@ -82,13 +88,21 @@ export default function StudentCompletedEvents() {
   return (
     <div className="completedPage">
       <section className="completedHero">
-        <h1>Completed Events</h1>
-        <p>Browse all events whose start time has already passed</p>
-        <div className="completedPill">Today: {todayStr}</div>
+        <div className="completedHeroContent">
+          <div className="completedMiniTag">Event Archive</div>
+          <h1>Completed Events</h1>
+          <p>Browse all events whose start time has already passed</p>
+          <div className="completedPill">Today: {todayStr}</div>
+        </div>
       </section>
 
       <section className="completedHeader">
-        <h2>Past Events Archive</h2>
+        <div>
+          <h2>Past Events Archive</h2>
+          <div className="completedSubText">
+            View recently completed college fest activities
+          </div>
+        </div>
 
         <button
           className="btnSmall2"
@@ -101,8 +115,15 @@ export default function StudentCompletedEvents() {
 
       {err && <div className="completedMsg error">{err}</div>}
 
+      {loading && <div className="completedLoading">Loading completed events...</div>}
+
       {!loading && !events.length && (
-        <div className="completedEmpty">No completed events yet.</div>
+        <div className="completedEmpty">
+          <div className="completedEmptyTitle">No completed events yet</div>
+          <div className="completedEmptyText">
+            Once an event's start time has passed, it will appear here.
+          </div>
+        </div>
       )}
 
       {!loading && !!events.length && (
@@ -127,15 +148,19 @@ export default function StudentCompletedEvents() {
                 <div className="completedTitle">{ev.title}</div>
 
                 <div className="completedMetaWrap">
-                  <div className="completedMeta">📍 {ev.venue || "-"}</div>
-
                   <div className="completedMeta">
-                    📅 {ev.event_date ? formatDate(ev.event_date) : "-"}
+                    <span className="metaIcon">📍</span>
+                    <span>{ev.venue || "-"}</span>
                   </div>
 
                   <div className="completedMeta">
-                    ⏰ {String(ev.start_time || "").slice(0, 5)}
-                    {ev.end_time ? ` - ${String(ev.end_time).slice(0, 5)}` : ""}
+                    <span className="metaIcon">📅</span>
+                    <span>{formatDate(ev.event_date)}</span>
+                  </div>
+
+                  <div className="completedMeta">
+                    <span className="metaIcon">⏰</span>
+                    <span>{formatTimeRange(ev.start_time, ev.end_time)}</span>
                   </div>
                 </div>
 

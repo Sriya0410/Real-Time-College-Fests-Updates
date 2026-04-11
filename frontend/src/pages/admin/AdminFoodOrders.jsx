@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import api from "../../services/api";
 import "../../styles/adminOrdersPage.css";
 
@@ -25,8 +26,6 @@ export default function AdminFoodOrders() {
         throw new Error("Admin token missing. Please login again as ADMIN.");
       }
 
-      // ✅ Because baseURL = http://localhost:5000/api
-      // Final URL => GET http://localhost:5000/api/admin/orders
       const res = await api.get("/admin/orders");
       setOrders(res.data?.data || []);
     } catch (e) {
@@ -50,7 +49,9 @@ export default function AdminFoodOrders() {
     setErr("");
     try {
       await api.patch(`/admin/orders/${orderId}/paid`);
-      setOrders((prev) => prev.map((o) => (o.id === orderId ? { ...o, is_paid: 1 } : o)));
+      setOrders((prev) =>
+        prev.map((o) => (o.id === orderId ? { ...o, is_paid: 1 } : o))
+      );
     } catch (e) {
       setErr(e?.response?.data?.message || "Failed to mark paid");
     }
@@ -60,7 +61,9 @@ export default function AdminFoodOrders() {
     setErr("");
     try {
       await api.patch(`/admin/orders/${orderId}/status`, { status: nextStatus });
-      setOrders((prev) => prev.map((o) => (o.id === orderId ? { ...o, status: nextStatus } : o)));
+      setOrders((prev) =>
+        prev.map((o) => (o.id === orderId ? { ...o, status: nextStatus } : o))
+      );
     } catch (e) {
       setErr(e?.response?.data?.message || "Failed to update status");
     }
@@ -78,10 +81,12 @@ export default function AdminFoodOrders() {
         String(o.stall_name || "").toLowerCase().includes(qq) ||
         String(o.user_name || o.student_name || "").toLowerCase().includes(qq);
 
-      const matchStatus = status === "ALL" || String(o.status || "").toUpperCase() === status;
+      const matchStatus =
+        status === "ALL" || String(o.status || "").toUpperCase() === status;
 
       const isPaidNow = Number(o.is_paid || 0) === 1;
-      const matchPaid = paid === "ALL" || (paid === "PAID" ? isPaidNow : !isPaidNow);
+      const matchPaid =
+        paid === "ALL" || (paid === "PAID" ? isPaidNow : !isPaidNow);
 
       return matchQ && matchStatus && matchPaid;
     });
@@ -91,7 +96,11 @@ export default function AdminFoodOrders() {
     () => filtered.reduce((sum, o) => sum + Number(o.total_amount || 0), 0),
     [filtered]
   );
-  const paidCount = useMemo(() => filtered.filter((o) => Number(o.is_paid || 0) === 1).length, [filtered]);
+
+  const paidCount = useMemo(
+    () => filtered.filter((o) => Number(o.is_paid || 0) === 1).length,
+    [filtered]
+  );
 
   return (
     <div className="adminOrdersPage">
@@ -99,7 +108,11 @@ export default function AdminFoodOrders() {
         <div>
           <h1 className="adminOrdersTitle">Food Orders</h1>
           <div className="adminOrdersSub">
-            {loading ? "Loading..." : `${filtered.length} orders • ₹${totalRevenue.toFixed(0)} total • ${paidCount} paid`}
+            {loading
+              ? "Loading..."
+              : `${filtered.length} orders • ₹${totalRevenue.toFixed(
+                  0
+                )} total • ${paidCount} paid`}
           </div>
         </div>
 
@@ -118,7 +131,11 @@ export default function AdminFoodOrders() {
           placeholder="Search: order id / stall / user..."
         />
 
-        <select className="adminSelect" value={status} onChange={(e) => setStatus(e.target.value)}>
+        <select
+          className="adminSelect"
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+        >
           <option value="ALL">All Status</option>
           <option value="PLACED">PLACED</option>
           <option value="ACCEPTED">ACCEPTED</option>
@@ -127,7 +144,11 @@ export default function AdminFoodOrders() {
           <option value="CANCELLED">CANCELLED</option>
         </select>
 
-        <select className="adminSelect" value={paid} onChange={(e) => setPaid(e.target.value)}>
+        <select
+          className="adminSelect"
+          value={paid}
+          onChange={(e) => setPaid(e.target.value)}
+        >
           <option value="ALL">All Payments</option>
           <option value="PAID">Paid</option>
           <option value="UNPAID">Unpaid</option>
@@ -153,7 +174,9 @@ export default function AdminFoodOrders() {
               <div className="tr" key={o.id}>
                 <div className="td">
                   <div className="idLine">#{o.id}</div>
-                  <div className="mutedLine">{o.created_at ? new Date(o.created_at).toLocaleString() : "-"}</div>
+                  <div className="mutedLine">
+                    {o.created_at ? new Date(o.created_at).toLocaleString() : "-"}
+                  </div>
                 </div>
 
                 <div className="td">
@@ -171,7 +194,9 @@ export default function AdminFoodOrders() {
                 <div className="td">
                   <div className="payRow">
                     <span className="payTag">{pm}</span>
-                    <span className={`payTag ${isPaidNow ? "paid" : "unpaid"}`}>{isPaidNow ? "PAID" : "UNPAID"}</span>
+                    <span className={`payTag ${isPaidNow ? "paid" : "unpaid"}`}>
+                      {isPaidNow ? "PAID" : "UNPAID"}
+                    </span>
                   </div>
                 </div>
 
@@ -180,13 +205,21 @@ export default function AdminFoodOrders() {
                 </div>
 
                 <div className="td actions">
+                  <Link className="miniBtn" to={`/admin/food/receipt/${o.id}`}>
+                    Receipt
+                  </Link>
+
                   {!isPaidNow && (
                     <button className="miniBtn" onClick={() => markPaid(o.id)}>
                       Mark Paid
                     </button>
                   )}
 
-                  <select className="miniSelect" value={st} onChange={(e) => updateStatus(o.id, e.target.value)}>
+                  <select
+                    className="miniSelect"
+                    value={st}
+                    onChange={(e) => updateStatus(o.id, e.target.value)}
+                  >
                     <option value="PLACED">PLACED</option>
                     <option value="ACCEPTED">ACCEPTED</option>
                     <option value="READY">READY</option>
@@ -198,7 +231,9 @@ export default function AdminFoodOrders() {
             );
           })}
 
-          {!loading && filtered.length === 0 && <div className="adminEmpty2">No orders found.</div>}
+          {!loading && filtered.length === 0 && (
+            <div className="adminEmpty2">No orders found.</div>
+          )}
         </div>
       </div>
     </div>

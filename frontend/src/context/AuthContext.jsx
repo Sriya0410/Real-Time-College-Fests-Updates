@@ -52,6 +52,34 @@ export function AuthProvider({ children }) {
     return { token, user: u };
   };
 
+  const forgotStudentPassword = async (email) => {
+    const res = await api.post("/auth/student/forgot-password", { email });
+    return res.data;
+  };
+
+  const resetStudentPassword = async ({ token, password, confirmPassword }) => {
+    const res = await api.post("/auth/student/reset-password", {
+      token,
+      password,
+      confirmPassword,
+    });
+    return res.data;
+  };
+
+  const forgotAdminPassword = async (email) => {
+    const res = await api.post("/auth/admin/forgot-password", { email });
+    return res.data;
+  };
+
+  const resetAdminPassword = async ({ token, password, confirmPassword }) => {
+    const res = await api.post("/auth/admin/reset-password", {
+      token,
+      password,
+      confirmPassword,
+    });
+    return res.data;
+  };
+
   const logoutStudent = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -76,6 +104,10 @@ export function AuthProvider({ children }) {
       registerStudent,
       loginStudent,
       loginAdmin,
+      forgotStudentPassword,
+      resetStudentPassword,
+      forgotAdminPassword,
+      resetAdminPassword,
       logoutStudent,
       logoutAdmin,
       logout,

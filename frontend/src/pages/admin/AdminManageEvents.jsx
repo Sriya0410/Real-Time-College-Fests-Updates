@@ -5,7 +5,7 @@ import "../../styles/adminManageEvents.css";
 const fmtDate = (v) => (v ? String(v).slice(0, 10) : "");
 const fmtTime = (v) => (v ? String(v).slice(0, 5) : "");
 
-// ✅ helper: show computed status if backend sends it
+// helper: show computed status if backend sends it
 const showStatus = (ev) => ev?.computed_status || ev?.status || "-";
 
 export default function AdminManageEvents() {
@@ -21,7 +21,7 @@ export default function AdminManageEvents() {
     setLoading(true);
     setErr("");
     try {
-      const res = await api.get("/events"); // { ok:true, data:{upcoming,completed,all} }
+      const res = await api.get("/events");
       const payload = res.data?.data;
       const all = Array.isArray(payload?.all)
         ? payload.all
@@ -51,7 +51,7 @@ export default function AdminManageEvents() {
         ev.description,
         ev.venue,
         ev.status,
-        ev.computed_status, // ✅ include computed status in search
+        ev.computed_status,
         ev.category_name,
         ev.category_id,
         ev.is_paid ? "paid" : "free",
@@ -73,7 +73,6 @@ export default function AdminManageEvents() {
       price: Number(ev.price || 0),
       capacity: ev.capacity ?? 0,
       is_paid: ev.is_paid ? 1 : 0,
-      // ✅ keep editable status from DB; computed_status is display-only
       status: ev.status || "UPCOMING",
     });
   };
@@ -86,11 +85,13 @@ export default function AdminManageEvents() {
     if (!String(editing.title || "").trim()) return alert("Title required");
     if (!String(editing.event_date || "").trim()) return alert("Event date required");
     if (!String(editing.start_time || "").trim()) return alert("Start time required");
-    if (Number(editing.is_paid) === 1 && !(Number(editing.price) > 0))
+    if (Number(editing.is_paid) === 1 && !(Number(editing.price) > 0)) {
       return alert("Paid event needs price > 0");
+    }
 
     setSaving(true);
     setErr("");
+
     try {
       await api.put(`/events/${editing.id}`, {
         category_id: Number(editing.category_id),
@@ -98,7 +99,9 @@ export default function AdminManageEvents() {
         description: String(editing.description || "").trim(),
         event_date: editing.event_date,
         start_time:
-          editing.start_time.length === 5 ? `${editing.start_time}:00` : editing.start_time,
+          editing.start_time.length === 5
+            ? `${editing.start_time}:00`
+            : editing.start_time,
         end_time: editing.end_time
           ? editing.end_time.length === 5
             ? `${editing.end_time}:00`
@@ -155,7 +158,9 @@ export default function AdminManageEvents() {
       {err && <div className="ameMsg error">{err}</div>}
       {loading && <div className="ameMsg">Loading events...</div>}
 
-      {!loading && filtered.length === 0 && <div className="ameMsg">No events found.</div>}
+      {!loading && filtered.length === 0 && (
+        <div className="ameMsg">No events found.</div>
+      )}
 
       {!loading && filtered.length > 0 && (
         <div className="ameGrid">
@@ -165,11 +170,15 @@ export default function AdminManageEvents() {
 
               <div className="ameMeta">
                 📅 {fmtDate(ev.event_date)} • ⏰ {fmtTime(ev.start_time)}
-                {ev.end_time ? ` - ${fmtTime(ev.end_time)}` : ""} • 📍 {ev.venue || "-"}
+                {ev.end_time ? ` - ${fmtTime(ev.end_time)}` : ""}
               </div>
 
               <div className="ameMeta">
-                {ev.is_paid ? `Paid ₹${Number(ev.price || 0).toFixed(0)}` : "Free"} • Capacity:{" "}
+                📍 {ev.venue || "-"}
+              </div>
+
+              <div className="ameMeta">
+                {ev.is_paid ? `₹${Number(ev.price || 0).toFixed(0)}` : "Free"} • Capacity:{" "}
                 {Number(ev.capacity || 0) > 0 ? ev.capacity : "Unlimited"} • Status:{" "}
                 <b>{showStatus(ev)}</b>
               </div>
@@ -187,7 +196,6 @@ export default function AdminManageEvents() {
         </div>
       )}
 
-      {/* ===== Edit Modal ===== */}
       {editing && (
         <div className="ameModalBackdrop" onClick={() => setEditing(null)}>
           <div className="ameModal" onClick={(e) => e.stopPropagation()}>
@@ -201,7 +209,10 @@ export default function AdminManageEvents() {
             <div className="ameForm">
               <label>
                 Title
-                <input value={editing.title || ""} onChange={(e) => setField("title", e.target.value)} />
+                <input
+                  value={editing.title || ""}
+                  onChange={(e) => setField("title", e.target.value)}
+                />
               </label>
 
               <label>
@@ -225,7 +236,10 @@ export default function AdminManageEvents() {
 
                 <label>
                   Status (Manual)
-                  <select value={editing.status || "UPCOMING"} onChange={(e) => setField("status", e.target.value)}>
+                  <select
+                    value={editing.status || "UPCOMING"}
+                    onChange={(e) => setField("status", e.target.value)}
+                  >
                     <option value="UPCOMING">UPCOMING</option>
                     <option value="LIVE">LIVE</option>
                     <option value="FULL">FULL</option>
@@ -233,7 +247,6 @@ export default function AdminManageEvents() {
                     <option value="CANCELLED">CANCELLED</option>
                   </select>
 
-                  {/* ✅ show computed status too */}
                   <div style={{ marginTop: 6, fontSize: 12, opacity: 0.8 }}>
                     Computed: <b>{editing.computed_status || "—"}</b>
                   </div>
@@ -262,13 +275,19 @@ export default function AdminManageEvents() {
 
               <label>
                 Venue
-                <input value={editing.venue || ""} onChange={(e) => setField("venue", e.target.value)} />
+                <input
+                  value={editing.venue || ""}
+                  onChange={(e) => setField("venue", e.target.value)}
+                />
               </label>
 
               <div className="ameRow2">
                 <label>
                   Paid?
-                  <select value={String(editing.is_paid)} onChange={(e) => setField("is_paid", Number(e.target.value))}>
+                  <select
+                    value={String(editing.is_paid)}
+                    onChange={(e) => setField("is_paid", Number(e.target.value))}
+                  >
                     <option value="0">Free</option>
                     <option value="1">Paid</option>
                   </select>
@@ -299,7 +318,11 @@ export default function AdminManageEvents() {
                   {saving ? "Saving..." : "Save Changes"}
                 </button>
 
-                <button className="ameBtn danger" onClick={() => deleteEvent(editing.id)} disabled={saving}>
+                <button
+                  className="ameBtn danger"
+                  onClick={() => deleteEvent(editing.id)}
+                  disabled={saving}
+                >
                   Delete Event
                 </button>
               </div>

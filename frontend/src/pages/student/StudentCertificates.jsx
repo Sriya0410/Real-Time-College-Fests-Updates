@@ -70,14 +70,17 @@ export default function StudentCertificates() {
   const { generatedCertificates, registrations, generatedEventIds, eligibility } =
     dashboard;
 
-  // ✅ show only completed events in eligibility section
   const completedRegistrations = useMemo(() => {
     return (registrations || []).filter((reg) => {
       const status = String(reg?.event_status || reg?.status || "")
         .trim()
         .toUpperCase();
 
-      return status === "COMPLETED";
+      const category = String(reg?.category_name || "")
+        .trim()
+        .toUpperCase();
+
+      return status === "COMPLETED" && category !== "PROSHOWS";
     });
   }, [registrations]);
 
@@ -138,7 +141,7 @@ export default function StudentCertificates() {
         <h2 className="certSectionTitle">Eligibility Status</h2>
 
         {!completedRegistrations.length ? (
-          <div className="certEmpty">No completed events found.</div>
+          <div className="certEmpty">No eligible completed events found.</div>
         ) : (
           <div className="certGrid">
             {completedRegistrations.map((reg) => {
@@ -166,6 +169,7 @@ export default function StudentCertificates() {
                   badge={badge}
                   badgeClass={badgeClass}
                   details={[
+                    { label: "Category", value: reg.category_name || "-" },
                     { label: "Event Date", value: formatDate(reg.event_date) },
                     { label: "Venue", value: reg.venue || "-" },
                     {

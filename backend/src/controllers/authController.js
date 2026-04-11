@@ -1,11 +1,23 @@
 const pool = require("../config/db");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 
 function makeToken(payload) {
   return jwt.sign(payload, process.env.JWT_SECRET || "secret", {
     expiresIn: "7d",
   });
+}
+
+function makeResetToken(payload) {
+  return jwt.sign(payload, process.env.RESET_PASSWORD_SECRET || "reset_secret", {
+    expiresIn: "15m",
+  });
+}
+
+function verifyResetToken(token) {
+  return jwt.verify(
+    token,
+    process.env.RESET_PASSWORD_SECRET || "reset_secret"
+  );
 }
 
 /* ================= ADMIN LOGIN ================= */
@@ -32,9 +44,7 @@ async function adminLogin(req, res) {
         .json({ ok: false, message: "Account is inactive" });
     }
 
-    const ok = admin.password?.startsWith("$2")
-      ? await bcrypt.compare(password, admin.password)
-      : password === admin.password;
+    const ok = String(admin.password || "") === String(password || "");
 
     if (!ok) {
       return res
@@ -90,9 +100,7 @@ async function studentLogin(req, res) {
         .json({ ok: false, message: "Account is inactive" });
     }
 
-    const ok = user.password?.startsWith("$2")
-      ? await bcrypt.compare(password, user.password)
-      : password === user.password;
+    const ok = String(user.password || "") === String(password || "");
 
     if (!ok) {
       return res
@@ -145,12 +153,10 @@ async function registerStudent(req, res) {
         .json({ ok: false, message: "Email already exists" });
     }
 
-    const hash = await bcrypt.hash(password, 10);
-
     await pool.query(
       `INSERT INTO users (full_name, reg_no, email, phone, password, is_active)
        VALUES (?, ?, ?, ?, ?, 1)`,
-      [full_name, reg_no || null, email, phone || null, hash]
+      [full_name, reg_no || null, email, phone || null, password]
     );
 
     return res
@@ -165,4 +171,231 @@ async function registerStudent(req, res) {
   }
 }
 
-module.exports = { adminLogin, studentLogin, registerStudent };
+/* ================= STUDENT FORGOT PASSWORD ================= */
+async function requestStudentPasswordReset(req, res) {
+  try {
+    const email = String(req.body?.email || "").trim().toLowerCase();
+
+    if (!email) {
+      return res.status(400).json({
+        ok: false,
+        message: "Email is required",
+      });
+    }
+
+    const [rows] = await pool.query(
+      "SELECT id, email, full_name, is_active FROM users WHERE email=? LIMIT 1",
+      [email]
+    );
+
+    if (!rows.length) {
+      return res.status(404).json({
+        ok: false,
+        message: "No student account found with this email",
+      });
+    }
+
+    const user = rows[0];
+
+    if (user.is_active !== undefined && Number(user.is_active) !== 1) {
+      return res.status(403).json({
+        ok: false,
+        message: "Account is inactive",
+      });
+    }
+
+    const resetToken = makeResetToken({
+      id: user.id,
+      email: user.email,
+      type: "STUDENT",
+      purpose: "reset_password",
+    });
+
+    return res.json({
+      ok: true,
+      message: "Reset token generated",
+      resetToken,
+    });
+  } catch (e) {
+    console.error("requestStudentPasswordReset error:", e);
+    return res.status(500).json({ ok: false, message: "Server error" });
+  }
+}
+
+async function resetStudentPassword(req, res) {
+  try {
+    const token = String(req.body?.token || "").trim();
+    const password = String(req.body?.password || "");
+    const confirmPassword = String(req.body?.confirmPassword || "");
+
+    if (!token || !password || !confirmPassword) {
+      return res.status(400).json({
+        ok: false,
+        message: "token, password, confirmPassword required",
+      });
+    }
+
+    if (password.length < 4) {
+      return res.status(400).json({
+        ok: false,
+        message: "Password must be at least 4 characters",
+      });
+    }
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        ok: false,
+        message: "Passwords do not match",
+      });
+    }
+
+    const decoded = verifyResetToken(token);
+
+    if (
+      decoded?.purpose !== "reset_password" ||
+      decoded?.type !== "STUDENT" ||
+      !decoded?.id
+    ) {
+      return res.status(400).json({
+        ok: false,
+        message: "Invalid or expired reset token",
+      });
+    }
+
+    await pool.query("UPDATE users SET password=? WHERE id=?", [
+      password,
+      Number(decoded.id),
+    ]);
+
+    return res.json({
+      ok: true,
+      message: "Student password reset successful",
+    });
+  } catch (e) {
+    console.error("resetStudentPassword error:", e);
+    return res.status(400).json({
+      ok: false,
+      message: "Invalid or expired reset token",
+    });
+  }
+}
+
+/* ================= ADMIN FORGOT PASSWORD ================= */
+async function requestAdminPasswordReset(req, res) {
+  try {
+    const email = String(req.body?.email || "").trim().toLowerCase();
+
+    if (!email) {
+      return res.status(400).json({
+        ok: false,
+        message: "Email is required",
+      });
+    }
+
+    const [rows] = await pool.query(
+      "SELECT id, email, full_name, is_active, role FROM admins WHERE email=? LIMIT 1",
+      [email]
+    );
+
+    if (!rows.length) {
+      return res.status(404).json({
+        ok: false,
+        message: "No admin account found with this email",
+      });
+    }
+
+    const admin = rows[0];
+
+    if (Number(admin.is_active) !== 1) {
+      return res.status(403).json({
+        ok: false,
+        message: "Account is inactive",
+      });
+    }
+
+    const resetToken = makeResetToken({
+      id: admin.id,
+      email: admin.email,
+      type: "ADMIN",
+      purpose: "reset_password",
+      role: String(admin.role || "ADMIN").toUpperCase(),
+    });
+
+    return res.json({
+      ok: true,
+      message: "Reset token generated",
+      resetToken,
+    });
+  } catch (e) {
+    console.error("requestAdminPasswordReset error:", e);
+    return res.status(500).json({ ok: false, message: "Server error" });
+  }
+}
+
+async function resetAdminPassword(req, res) {
+  try {
+    const token = String(req.body?.token || "").trim();
+    const password = String(req.body?.password || "");
+    const confirmPassword = String(req.body?.confirmPassword || "");
+
+    if (!token || !password || !confirmPassword) {
+      return res.status(400).json({
+        ok: false,
+        message: "token, password, confirmPassword required",
+      });
+    }
+
+    if (password.length < 4) {
+      return res.status(400).json({
+        ok: false,
+        message: "Password must be at least 4 characters",
+      });
+    }
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        ok: false,
+        message: "Passwords do not match",
+      });
+    }
+
+    const decoded = verifyResetToken(token);
+
+    if (
+      decoded?.purpose !== "reset_password" ||
+      decoded?.type !== "ADMIN" ||
+      !decoded?.id
+    ) {
+      return res.status(400).json({
+        ok: false,
+        message: "Invalid or expired reset token",
+      });
+    }
+
+    await pool.query("UPDATE admins SET password=? WHERE id=?", [
+      password,
+      Number(decoded.id),
+    ]);
+
+    return res.json({
+      ok: true,
+      message: "Admin password reset successful",
+    });
+  } catch (e) {
+    console.error("resetAdminPassword error:", e);
+    return res.status(400).json({
+      ok: false,
+      message: "Invalid or expired reset token",
+    });
+  }
+}
+
+module.exports = {
+  adminLogin,
+  studentLogin,
+  registerStudent,
+  requestStudentPasswordReset,
+  resetStudentPassword,
+  requestAdminPasswordReset,
+  resetAdminPassword,
+};

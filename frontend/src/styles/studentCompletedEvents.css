@@ -7,44 +7,45 @@
 /* Hero section */
 .completedHero{
   width: 100%;
-  border-radius: 28px;
-  padding: 44px 42px;
+  border-radius: 24px;
+  padding: 38px 34px;
   color: #fff;
   background: linear-gradient(90deg, #6b7cff, #7a4aa8);
-  box-shadow: 0 20px 60px rgba(0,0,0,.28);
+  box-shadow: 0 16px 40px rgba(0,0,0,.20);
 }
 
 .completedHero h1{
   margin: 0;
-  font-size: 52px;
+  font-size: 46px;
   font-weight: 1000;
   letter-spacing: .2px;
 }
 
 .completedHero p{
-  margin: 12px 0 0;
-  font-size: 18px;
+  margin: 10px 0 0;
+  font-size: 17px;
   opacity: .92;
 }
 
 .completedPill{
-  margin-top: 18px;
+  margin-top: 16px;
   display: inline-flex;
-  padding: 12px 18px;
+  padding: 10px 16px;
   border-radius: 999px;
-  background: rgba(255,255,255,.18);
-  border: 1px solid rgba(255,255,255,.26);
+  background: rgba(255,255,255,.16);
+  border: 1px solid rgba(255,255,255,.24);
   font-weight: 900;
+  font-size: 14px;
 }
 
 /* Top bar */
 .completedHeader{
   margin-top: 18px;
-  background: rgba(255,255,255,.92);
-  border-radius: 26px;
-  padding: 20px 22px;
-  box-shadow: 0 18px 55px rgba(0,0,0,.18);
-  border: 1px solid rgba(0,0,0,.06);
+  background: rgba(255,255,255,.94);
+  border-radius: 22px;
+  padding: 18px 20px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.10);
+  border: 1px solid rgba(0,0,0,.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -55,18 +56,19 @@
 .completedHeader h2{
   margin: 0;
   color: #111;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 1000;
 }
 
 .btnSmall2{
-  padding: 14px 18px;
+  padding: 12px 18px;
   border-radius: 999px;
-  border: 1px solid rgba(0,0,0,.12);
+  border: 1px solid rgba(0,0,0,.10);
   background: #fff;
   font-weight: 900;
   cursor: pointer;
   color: #111;
+  transition: .18s ease;
 }
 
 .btnSmall2:hover{
@@ -82,7 +84,7 @@
 .completedMsg{
   margin-top: 16px;
   padding: 14px;
-  border-radius: 18px;
+  border-radius: 16px;
   background: rgba(255,255,255,.08);
   border: 1px solid rgba(255,255,255,.14);
   color: rgba(255,255,255,.92);
@@ -97,7 +99,7 @@
 .completedEmpty{
   margin-top: 16px;
   padding: 18px;
-  border-radius: 18px;
+  border-radius: 16px;
   background: rgba(255,255,255,.08);
   border: 1px solid rgba(255,255,255,.14);
   color: rgba(255,255,255,.92);
@@ -106,31 +108,31 @@
 
 /* section heading */
 .completedWrap{
-  margin-top: 34px;
+  margin-top: 28px;
 }
 
 .completedHead{
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .completedSectionTitle{
-  font-size: 34px;
+  font-size: 30px;
   font-weight: 1000;
   color: #fff;
   letter-spacing: .3px;
 }
 
 .completedSectionTitle span{
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 900;
   opacity: .75;
   margin-left: 8px;
 }
 
 .completedLine{
-  margin-top: 12px;
+  margin-top: 10px;
   height: 4px;
-  width: 180px;
+  width: 150px;
   border-radius: 999px;
   background: #2f65ff;
 }
@@ -144,19 +146,20 @@
 
 /* cards */
 .completedCard{
-  background: rgba(255,255,255,.96);
-  border-radius: 20px;
-  border: 1px solid rgba(0,0,0,.08);
-  box-shadow: 0 10px 26px rgba(0,0,0,.12);
-  padding: 18px;
+  background: #ffffff;
+  border-radius: 22px;
+  border: 1px solid rgba(0,0,0,.06);
+  box-shadow: 0 8px 22px rgba(0,0,0,.08);
+  padding: 22px;
   display: flex;
   flex-direction: column;
   color: #111;
-  transition: .2s ease;
+  transition: .18s ease;
 }
 
 .completedCard:hover{
-  transform: translateY(-3px);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(0,0,0,.10);
 }
 
 .completedCardTop{
@@ -168,39 +171,40 @@
 }
 
 .completedCat{
-  padding: 10px 14px;
+  padding: 10px 16px;
   border-radius: 999px;
-  background: #f1f3f7;
-  border: 1px solid #d7dce5;
-  color: #6b7280;
+  background: #f3f4f6;
+  border: 1px solid #dde2ea;
+  color: #667085;
   font-size: 12px;
   font-weight: 1000;
-  letter-spacing: .4px;
+  letter-spacing: .5px;
   text-transform: uppercase;
 }
 
 .completedBadge{
-  padding: 10px 14px;
+  padding: 10px 16px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 1000;
-  background: rgba(34, 197, 94, 0.14);
-  border: 1px solid rgba(34, 197, 94, 0.30);
+  background: #dff5e7;
+  border: 1px solid #a7e0b7;
   color: #15803d;
 }
 
 .completedTitle{
-  margin: 16px 0 8px;
-  font-size: 24px;
+  margin: 18px 0 14px;
+  font-size: 22px;
   font-weight: 1000;
   color: #111;
+  line-height: 1.3;
 }
 
 .completedMetaWrap{
-  margin-top: 8px;
+  margin-top: 2px;
   display: grid;
   gap: 12px;
-  color: rgba(0,0,0,.72);
+  color: #475467;
   font-weight: 600;
 }
 
@@ -209,11 +213,13 @@
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
+  font-size: 15px;
 }
 
 .completedDesc{
-  margin-top: 10px;
-  color: rgba(0,0,0,.62);
+  margin-top: 18px;
+  color: #475467;
+  font-size: 15px;
   font-weight: 500;
   line-height: 1.55;
 }
@@ -231,7 +237,7 @@
   }
 
   .completedHero h1{
-    font-size: 42px;
+    font-size: 40px;
   }
 }
 
@@ -245,10 +251,26 @@
   }
 
   .completedHero h1{
-    font-size: 32px;
+    font-size: 30px;
   }
 
   .completedHeader{
     padding: 16px;
+  }
+
+  .completedHeader h2{
+    font-size: 22px;
+  }
+
+  .completedSectionTitle{
+    font-size: 24px;
+  }
+
+  .completedCard{
+    padding: 18px;
+  }
+
+  .completedTitle{
+    font-size: 20px;
   }
 }

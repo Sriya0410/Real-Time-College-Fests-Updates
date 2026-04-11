@@ -10,6 +10,8 @@ export default function StudentSignup() {
   const [show1, setShow1] = useState(false);
   const [show2, setShow2] = useState(false);
   const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const [form, setForm] = useState({
     full_name: "",
@@ -47,18 +49,22 @@ export default function StudentSignup() {
     const payload = {
       full_name: form.full_name.trim(),
       reg_no: form.reg_no.trim() || null,
-      email: form.email.trim(),
+      email: form.email.trim().toLowerCase(),
       phone: form.phone.trim() || null,
       password: form.password,
     };
 
     try {
-      console.log("Signup payload:", payload);
+      setLoading(true);
 
       const res = await registerStudent(payload);
       console.log("Signup success:", res);
 
-      navigate("/student/login");
+      setShowSuccess(true);
+
+      setTimeout(() => {
+        navigate("/student/login", { replace: true });
+      }, 1800);
     } catch (e2) {
       console.log("Signup error full:", e2);
       console.log("Signup error response:", e2?.response?.data);
@@ -69,6 +75,8 @@ export default function StudentSignup() {
           e2?.message ||
           "Signup failed"
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -160,7 +168,7 @@ export default function StudentSignup() {
                   className="ev-eye"
                   onClick={() => setShow1((s) => !s)}
                 >
-                  👁
+                  {show1 ? "🙈" : "👁"}
                 </button>
               </div>
             </label>
@@ -183,14 +191,14 @@ export default function StudentSignup() {
                   className="ev-eye"
                   onClick={() => setShow2((s) => !s)}
                 >
-                  👁
+                  {show2 ? "🙈" : "👁"}
                 </button>
               </div>
             </label>
           </div>
 
-          <button className="ev-primaryBtn" type="submit">
-            → Create Account
+          <button className="ev-primaryBtn" type="submit" disabled={loading}>
+            {loading ? "Creating Account..." : "→ Create Account"}
           </button>
 
           <div style={{ marginTop: 14, textAlign: "center" }}>
@@ -207,6 +215,19 @@ export default function StudentSignup() {
             </button>
           </div>
         </form>
+
+        {showSuccess && (
+          <div className="ev-modalOverlay">
+            <div className="ev-modalCard">
+              <div className="ev-successIcon">✓</div>
+              <h2 className="ev-modalTitle">Registration Successful</h2>
+              <p className="ev-modalText">
+                Your student account has been created successfully.
+              </p>
+              <p className="ev-modalSubText">Redirecting to login page...</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

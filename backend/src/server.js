@@ -19,12 +19,12 @@ const foodRoutes = require("./routes/foodRoutes");
 const adminDashboardRoutes = require("./routes/adminDashboardRoutes");
 const lostFoundRoutes = require("./routes/lostFoundRoutes");
 const adminLostFoundRoutes = require("./routes/adminLostFoundRoutes");
-const adminOrdersRoutes = require("./routes/adminOrders");
+const adminOrdersRoutes = require("./routes/adminFoodOrdersRoutes"); // ✅ updated route file
 const paymentRoutes = require("./routes/paymentRoutes");
 const refundRoutes = require("./routes/refundRoutes");
 const verifiedUpdateRoutes = require("./routes/verifiedUpdateRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes");
-const certificateRoutes = require("./routes/certificateRoutes"); // ✅ NEW
+const certificateRoutes = require("./routes/certificateRoutes");
 
 const app = express();
 const server = http.createServer(app);
@@ -58,48 +58,42 @@ app.use((req, _res, next) => {
 
 /* ✅ STATIC */
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
-
-// ✅ certificate assets
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
-/* ================= ROUTES ================= */
+/* ================= BASIC ================= */
 app.use("/api/health", (_req, res) => res.json({ ok: true }));
 
+/* ================= AUTH ================= */
 app.use("/api/auth", authRoutes);
 
+/* ================= MAIN APP ROUTES ================= */
 app.use("/api/events", eventRoutes);
 app.use("/api/categories", categoryRoutes);
-
 app.use("/api/student", studentRoutes);
 app.use("/api/registrations", registrationRoutes);
-
 app.use("/api/announcements", announcementRoutes);
 app.use("/api/live-updates", liveUpdateRoutes);
-
 app.use("/api/food", foodRoutes);
 app.use("/api/payments", paymentRoutes);
-
 app.use("/api/lostfound", lostFoundRoutes);
-
 app.use("/api/refunds", refundRoutes);
-
 app.use("/api/verified-updates", verifiedUpdateRoutes);
-
 app.use("/api/analytics", analyticsRoutes);
-
-// ✅ certificates
 app.use("/api/certificates", certificateRoutes);
 
-/* ✅ ADMIN ROUTES */
+/* ================= ADMIN ROUTES ================= */
 app.use("/api/admin/registrations", adminRegistrationRoutes);
 app.use("/api/admin", adminDashboardRoutes);
-app.use("/api/admin", adminOrdersRoutes);
+app.use("/api/admin", adminOrdersRoutes);      // ✅ includes /orders and /orders/:id/receipt
 app.use("/api/admin", adminLostFoundRoutes);
 
 /* ✅ ERROR HANDLER */
 app.use((err, _req, res, _next) => {
   console.error("❌ Server error:", err);
-  res.status(500).json({ ok: false, message: err?.message || "Server error" });
+  res.status(500).json({
+    ok: false,
+    message: err?.message || "Server error",
+  });
 });
 
 /* ✅ SOCKET INIT */

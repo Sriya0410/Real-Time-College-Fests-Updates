@@ -12,10 +12,15 @@ import AdminAnnouncements from "../pages/admin/AdminAnnouncements";
 import AdminLiveUpdates from "../pages/admin/AdminLiveUpdates";
 import AdminRegistrations from "../pages/admin/AdminRegistrations";
 import AdminFoodOrders from "../pages/admin/AdminFoodOrders";
+import AdminFoodReceipt from "../pages/admin/AdminFoodReceipt";
 import AdminLostFound from "../pages/admin/AdminLostFound";
 import AdminVerifiedUpdates from "../pages/admin/AdminVerifiedUpdates";
 import AdminAnalytics from "../pages/admin/AdminAnalytics";
 import AdminCheckin from "../pages/admin/AdminCheckin";
+
+/* ================= AUTH EXTRA ================= */
+import ForgotPassword from "../pages/auth/ForgotPassword";
+import ResetPassword from "../pages/auth/ResetPassword";
 
 /* ================= STUDENT AUTH ================= */
 import StudentAccess from "../pages/student/StudentAccess";
@@ -50,7 +55,7 @@ import StudentProfile from "../pages/student/StudentProfile";
 import StudentTicket from "../pages/student/StudentTicket";
 import VerifyTicket from "../pages/student/VerifyTicket";
 import CampusMap from "../pages/student/CampusMap";
-import StudentCertificates from "../pages/student/StudentCertificates"; // ✅ NEW
+import StudentCertificates from "../pages/student/StudentCertificates";
 
 /* ================= ROUTE GUARDS ================= */
 import AdminRoute from "./AdminRoute";
@@ -91,13 +96,12 @@ function AdminDefaultRedirect() {
 export default function AppRoutes() {
   return (
     <Routes>
-      {/* LANDING */}
       <Route path="/" element={<Landing />} />
 
-      {/* ADMIN LOGIN */}
       <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
 
-      {/* ADMIN PROTECTED */}
       <Route
         path="/admin/*"
         element={
@@ -192,6 +196,15 @@ export default function AppRoutes() {
         />
 
         <Route
+          path="food/receipt/:id"
+          element={
+            <AdminOnlyRoute>
+              <AdminFoodReceipt />
+            </AdminOnlyRoute>
+          }
+        />
+
+        <Route
           path="lostfound"
           element={
             <AdminOnlyRoute>
@@ -212,12 +225,10 @@ export default function AppRoutes() {
         <Route path="*" element={<AdminDefaultRedirect />} />
       </Route>
 
-      {/* STUDENT AUTH */}
       <Route path="/student/access" element={<StudentAccess />} />
       <Route path="/student/login" element={<StudentLogin />} />
       <Route path="/student/signup" element={<StudentSignup />} />
 
-      {/* STUDENT PROTECTED */}
       <Route
         path="/student/*"
         element={
@@ -233,7 +244,10 @@ export default function AppRoutes() {
         <Route path="completed-events" element={<StudentCompletedEvents />} />
         <Route path="campus-map" element={<CampusMap />} />
 
-        <Route path="updates" element={<Navigate to="updates/announcements" replace />} />
+        <Route
+          path="updates"
+          element={<Navigate to="updates/announcements" replace />}
+        />
         <Route path="updates/announcements" element={<StudentAnnouncements />} />
         <Route path="updates/live" element={<StudentLiveUpdates />} />
 
@@ -242,7 +256,7 @@ export default function AppRoutes() {
         <Route path="verify-ticket" element={<VerifyTicket />} />
 
         <Route path="registrations" element={<StudentRegistrations />} />
-        <Route path="certificates" element={<StudentCertificates />} /> {/* ✅ NEW */}
+        <Route path="certificates" element={<StudentCertificates />} />
         <Route path="ticket/:registrationId" element={<StudentTicket />} />
 
         <Route path="food-stalls" element={<StudentFoodStalls />} />
@@ -258,14 +272,16 @@ export default function AppRoutes() {
 
         <Route path="refunds" element={<StudentRefunds />} />
         <Route path="refunds/receipt/:id" element={<RefundReceipt />} />
-        <Route path="payments/refunds" element={<Navigate to="/student/refunds" replace />} />
+        <Route
+          path="payments/refunds"
+          element={<Navigate to="/student/refunds" replace />}
+        />
 
         <Route path="profile" element={<StudentProfile />} />
 
         <Route path="*" element={<Navigate to="home" replace />} />
       </Route>
 
-      {/* GLOBAL FALLBACK */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

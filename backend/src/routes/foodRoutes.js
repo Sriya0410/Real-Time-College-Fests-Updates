@@ -9,8 +9,6 @@ const {
   createFoodRazorpayOrder,
   verifyFoodRazorpayPayment,
   cancelFoodRazorpayPayment,
-
-  // ✅ new
   getFoodOrderReceipt,
   cancelMyFoodOrder,
 } = require("../controllers/foodController");
@@ -28,8 +26,6 @@ router.post("/orders/razorpay/cancel", auth, cancelFoodRazorpayPayment);
 
 // student orders
 router.get("/orders/my", auth, myOrders);
-
-// ✅ receipt + cancel
 router.get("/orders/:id/receipt", auth, getFoodOrderReceipt);
 router.post("/orders/:id/cancel", auth, cancelMyFoodOrder);
 

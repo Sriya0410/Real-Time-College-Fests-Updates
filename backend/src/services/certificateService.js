@@ -36,9 +36,19 @@ async function getUserById(userId) {
 
 async function getEventById(eventId) {
   const [rows] = await pool.query(
-    `SELECT id, title, event_date, start_time, end_time, venue, status
-     FROM events
-     WHERE id = ?
+    `SELECT 
+        e.id,
+        e.category_id,
+        e.title,
+        e.event_date,
+        e.start_time,
+        e.end_time,
+        e.venue,
+        e.status,
+        c.name AS category_name
+     FROM events e
+     LEFT JOIN event_categories c ON c.id = e.category_id
+     WHERE e.id = ?
      LIMIT 1`,
     [eventId]
   );
@@ -46,7 +56,6 @@ async function getEventById(eventId) {
 }
 
 async function getRegistration(userId, eventId) {
-  // try with full_name column in event_registrations
   try {
     const [rows] = await pool.query(
       `SELECT id, user_id, event_id, status, full_name
@@ -58,7 +67,6 @@ async function getRegistration(userId, eventId) {
     );
     return rows[0] || null;
   } catch (_e) {
-    // fallback if full_name column does not exist
     const [rows] = await pool.query(
       `SELECT id, user_id, event_id, status
        FROM event_registrations
@@ -72,7 +80,6 @@ async function getRegistration(userId, eventId) {
 }
 
 async function hasAttendance(userId, eventId, registrationId) {
-  // pattern 1: attendance_logs(user_id, event_id)
   try {
     const [rows] = await pool.query(
       `SELECT id
@@ -84,7 +91,6 @@ async function hasAttendance(userId, eventId, registrationId) {
     if (rows.length) return true;
   } catch (_) {}
 
-  // pattern 2: attendance_logs(registration_id)
   try {
     const [rows] = await pool.query(
       `SELECT id
@@ -96,7 +102,6 @@ async function hasAttendance(userId, eventId, registrationId) {
     if (rows.length) return true;
   } catch (_) {}
 
-  // pattern 3: attendance_logs(user_id)
   try {
     const [rows] = await pool.query(
       `SELECT id
@@ -141,8 +146,31 @@ async function getEligibility(userId, eventId) {
     return { eligible: false, reason: "Event not found." };
   }
 
+  // ❌ block proshows / concerts
+  const categoryName = String(event.category_name || "")
+    .trim()
+    .toUpperCase();
+
+  if (categoryName === "PROSHOWS") {
+    return {
+      eligible: false,
+      reason: "Certificates are not issued for Proshows / Concert events.",
+      user,
+      event,
+      registration: null,
+      existingCertificate: null,
+    };
+  }
+
   if (String(event.status || "").toUpperCase() === "CANCELLED") {
-    return { eligible: false, reason: "Event was cancelled." };
+    return {
+      eligible: false,
+      reason: "Event was cancelled.",
+      user,
+      event,
+      registration: null,
+      existingCertificate: null,
+    };
   }
 
   const today = new Date();
@@ -155,6 +183,10 @@ async function getEligibility(userId, eventId) {
     return {
       eligible: false,
       reason: "Certificate is available only after the event is completed.",
+      user,
+      event,
+      registration: null,
+      existingCertificate: null,
     };
   }
 
@@ -163,25 +195,37 @@ async function getEligibility(userId, eventId) {
     return {
       eligible: false,
       reason: "No registration found for this event.",
+      user,
+      event,
+      registration: null,
+      existingCertificate: null,
     };
   }
 
   const regStatus = String(registration.status || "").toUpperCase();
   const allowedStatuses = ["APPROVED", "CONFIRMED", "REGISTERED", "PAID", "SUCCESS"];
+
   if (regStatus && !allowedStatuses.includes(regStatus)) {
     return {
       eligible: false,
       reason: "Registration is not approved for certificate generation.",
+      user,
+      event,
+      registration,
+      existingCertificate: null,
     };
   }
 
-  // only compare names if full_name exists in event_registrations
   if (registration.full_name) {
     const regName = String(registration.full_name || "").trim();
     if (regName && normalizeName(profileName) !== normalizeName(regName)) {
       return {
         eligible: false,
         reason: "Profile name must match registration name before certificate generation.",
+        user,
+        event,
+        registration,
+        existingCertificate: null,
       };
     }
   }
@@ -191,6 +235,10 @@ async function getEligibility(userId, eventId) {
     return {
       eligible: false,
       reason: "Attendance not marked. Certificate is available only for attendees.",
+      user,
+      event,
+      registration,
+      existingCertificate: null,
     };
   }
 
@@ -249,9 +297,11 @@ async function listMyCertificates(userId) {
         c.issued_at,
         e.title AS event_title,
         e.event_date,
-        e.venue
+        e.venue,
+        ec.name AS category_name
      FROM certificates c
      INNER JOIN events e ON e.id = c.event_id
+     LEFT JOIN event_categories ec ON ec.id = e.category_id
      WHERE c.user_id = ?
      ORDER BY c.issued_at DESC`,
     [userId]
@@ -260,7 +310,6 @@ async function listMyCertificates(userId) {
 }
 
 async function listMyRegistrationsWithEvents(userId) {
-  // try with full_name in event_registrations
   try {
     const [rows] = await pool.query(
       `SELECT
@@ -272,16 +321,18 @@ async function listMyRegistrationsWithEvents(userId) {
           e.title AS event_title,
           e.event_date,
           e.venue,
-          e.status AS event_status
+          e.status AS event_status,
+          e.category_id,
+          ec.name AS category_name
        FROM event_registrations r
        INNER JOIN events e ON e.id = r.event_id
+       LEFT JOIN event_categories ec ON ec.id = e.category_id
        WHERE r.user_id = ?
        ORDER BY r.id DESC`,
       [userId]
     );
     return rows;
   } catch (_e) {
-    // fallback if full_name column does not exist
     const [rows] = await pool.query(
       `SELECT
           r.id,
@@ -291,9 +342,12 @@ async function listMyRegistrationsWithEvents(userId) {
           e.title AS event_title,
           e.event_date,
           e.venue,
-          e.status AS event_status
+          e.status AS event_status,
+          e.category_id,
+          ec.name AS category_name
        FROM event_registrations r
        INNER JOIN events e ON e.id = r.event_id
+       LEFT JOIN event_categories ec ON ec.id = e.category_id
        WHERE r.user_id = ?
        ORDER BY r.id DESC`,
       [userId]
