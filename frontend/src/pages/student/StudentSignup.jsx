@@ -90,9 +90,10 @@ export default function StudentSignup() {
           ← Back
         </button>
 
-        <h1 className="ev-titleBig">Account</h1>
+        <h2 className="ev-titleTop">Student</h2>
+        <h1 className="ev-titleBig pink">Signup</h1>
         <div className="ev-neonLine" />
-        <p className="ev-sub">Join EventVerse as a Student</p>
+        
 
         {err && <div className="ev-error">{err}</div>}
 

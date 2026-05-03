@@ -1,4 +1,5 @@
 const router = require("express").Router();
+
 const auth = require("../middleware/authMiddleware");
 const role = require("../middleware/roleMiddleware");
 
@@ -9,10 +10,36 @@ const {
   rejectRegistration,
 } = require("../controllers/adminRegistrationController");
 
-// ✅ ADMIN only
-router.get("/", auth, role(["ADMIN"]), getAllRegistrations);
-router.get("/pending", auth, role(["ADMIN"]), getPendingRegistrations);
-router.put("/:id/approve", auth, role(["ADMIN"]), approveRegistration);
-router.put("/:id/reject", auth, role(["ADMIN"]), rejectRegistration);
+// ✅ Admin + Student Affairs can view all registrations
+router.get(
+  "/",
+  auth,
+  role(["ADMIN", "STUDENT_AFFAIRS"]),
+  getAllRegistrations
+);
+
+// ✅ Admin + Student Affairs can view pending registrations
+router.get(
+  "/pending",
+  auth,
+  role(["ADMIN", "STUDENT_AFFAIRS"]),
+  getPendingRegistrations
+);
+
+// ✅ Admin + Student Affairs can approve registrations
+router.put(
+  "/:id/approve",
+  auth,
+  role(["ADMIN", "STUDENT_AFFAIRS"]),
+  approveRegistration
+);
+
+// ✅ Admin + Student Affairs can reject registrations
+router.put(
+  "/:id/reject",
+  auth,
+  role(["ADMIN", "STUDENT_AFFAIRS"]),
+  rejectRegistration
+);
 
 module.exports = router;

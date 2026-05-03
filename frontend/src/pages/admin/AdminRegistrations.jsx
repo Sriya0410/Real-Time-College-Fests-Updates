@@ -4,7 +4,11 @@ import "../../styles/adminRegistrations.css";
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
 const API = `${API_BASE}/api`;
 
-const getToken = () => localStorage.getItem("admin_token");
+const getToken = () =>
+  localStorage.getItem("admin_token") ||
+  localStorage.getItem("adminToken") ||
+  localStorage.getItem("student_affairs_token") ||
+  localStorage.getItem("token");
 
 export default function AdminRegistrations() {
   const [items, setItems] = useState([]);
@@ -43,16 +47,33 @@ export default function AdminRegistrations() {
 
     try {
       const token = getToken();
-      if (!token) throw new Error("Admin token missing. Please login again.");
+
+      if (!token) {
+        throw new Error("Login token missing. Please login again.");
+      }
 
       const res = await fetch(`${API}/admin/registrations`, {
-        headers: { Authorization: `Bearer ${token}` },
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
       });
 
       const json = await res.json().catch(() => null);
-      if (!json) throw new Error("Server returned invalid JSON");
 
-      if (!res.ok) throw new Error(json?.message || "Failed to load registrations");
+      if (!json) {
+        throw new Error("Server returned invalid JSON");
+      }
+
+      if (!res.ok) {
+        throw new Error(
+          `${json?.message || "Failed to load registrations"}${
+            json?.yourRole ? ` (Your role: ${json.yourRole})` : ""
+          }`
+        );
+      }
 
       setItems(Array.isArray(json?.data) ? json.data : []);
     } catch (e) {
@@ -74,6 +95,7 @@ export default function AdminRegistrations() {
           <h1>Recent Registrations</h1>
           <p>Latest registrations.</p>
         </div>
+
         <button className="btnSmall2" onClick={load} disabled={loading}>
           {loading ? "Loading..." : "Refresh"}
         </button>
@@ -86,10 +108,14 @@ export default function AdminRegistrations() {
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search by student, reg no, event, UTR, reference..."
         />
-        <div className="arCount">{loading ? "…" : `${filtered.length} results`}</div>
+
+        <div className="arCount">
+          {loading ? "…" : `${filtered.length} results`}
+        </div>
       </div>
 
       {loading && <div className="arInfo">Loading...</div>}
+
       {err && <div className="arError">{err}</div>}
 
       {!loading && !err && filtered.length === 0 && (
@@ -103,17 +129,21 @@ export default function AdminRegistrations() {
         <div className="arList">
           {filtered.map((r) => {
             const amountNow = Number(r.pay_amount || r.amount || 0);
+
             const isFreeEvent =
-              Number(r.is_paid) === 0 ||
+              Number(r.event_is_paid ?? r.is_paid) === 0 ||
               amountNow === 0 ||
               String(r.payment_status || "").toUpperCase() === "FREE";
 
             return (
               <div className="arCard" key={r.id}>
-                <div className="arTitle">{r.event_title || r.title || "Event"}</div>
+                <div className="arTitle">
+                  {r.event_title || r.title || "Event"}
+                </div>
 
                 <div className="arMeta">
-                  Student: <b>{r.full_name}</b> • {r.reg_no} • {r.branch} • Year {r.year}
+                  Student: <b>{r.full_name || "-"}</b> • {r.reg_no || "-"} •{" "}
+                  {r.branch || "-"} • Year {r.year || "-"}
                 </div>
 
                 <div className="arMeta">
@@ -127,11 +157,19 @@ export default function AdminRegistrations() {
                     </>
                   ) : (
                     <>
-                      Payment: ₹{amountNow.toFixed(0)} • Ref: <b>{r.reference_no || "-"}</b> • UTR:{" "}
-                      <b>{r.utr || "-"}</b> • Payment Status: <b>{r.payment_status || "-"}</b>
+                      Payment: ₹{amountNow.toFixed(0)} • Ref:{" "}
+                      <b>{r.reference_no || "-"}</b> • UTR:{" "}
+                      <b>{r.utr || "-"}</b> • Payment Status:{" "}
+                      <b>{r.payment_status || "-"}</b>
                     </>
                   )}
                 </div>
+
+                {r.ticket_code ? (
+                  <div className="arMeta">
+                    Ticket Code: <b>{r.ticket_code}</b>
+                  </div>
+                ) : null}
               </div>
             );
           })}

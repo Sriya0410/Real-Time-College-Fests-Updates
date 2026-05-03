@@ -63,19 +63,25 @@ export default function EventCard({ event }) {
   }, [event?.start_time, event?.end_time]);
 
   const statusBadge = useMemo(() => {
-    if (isFull && event?.status !== "COMPLETED") return { text: "FULL", cls: "full" };
+    if (isFull && event?.status !== "COMPLETED") {
+      return { text: "FULL", cls: "full" };
+    }
 
     const st = String(event?.status || "UPCOMING").toUpperCase();
+
     if (st === "LIVE") return { text: "LIVE", cls: "live" };
     if (st === "COMPLETED") return { text: "COMPLETED", cls: "completed" };
     if (st === "CANCELLED") return { text: "CANCELLED", cls: "cancelled" };
+
     return { text: "UPCOMING", cls: "upcoming" };
   }, [event?.status, isFull]);
 
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
+  const [processing, setProcessing] = useState(false);
   const [err, setErr] = useState("");
+  const [upiId, setUpiId] = useState("success@razorpay");
 
   const [form, setForm] = useState({
     name: "",
@@ -95,7 +101,10 @@ export default function EventCard({ event }) {
     setOpen(true);
     setStep(1);
     setSubmitting(false);
+    setProcessing(false);
     setErr("");
+    setUpiId("success@razorpay");
+
     setForm({
       name: "",
       regno: "",
@@ -110,7 +119,9 @@ export default function EventCard({ event }) {
     setOpen(false);
     setStep(1);
     setSubmitting(false);
+    setProcessing(false);
     setErr("");
+    setUpiId("success@razorpay");
   }
 
   function validateForm() {
@@ -127,6 +138,7 @@ export default function EventCard({ event }) {
     if (!phoneOk) return "Enter a valid 10-digit phone number.";
     if (!branchOk) return "Select your branch.";
     if (!yearOk) return "Select your year (1-4).";
+
     return "";
   }
 
@@ -155,7 +167,11 @@ export default function EventCard({ event }) {
       };
 
       const res = await api.post("/registrations", payload);
-      if (!res.data?.ok) throw new Error(res.data?.message || "Registration failed");
+
+      if (!res.data?.ok) {
+        throw new Error(res.data?.message || "Registration failed");
+      }
+
       setStep(3);
     } catch (e) {
       setErr(e?.response?.data?.message || e?.message || "Registration failed. Try again.");
@@ -172,6 +188,7 @@ export default function EventCard({ event }) {
     if (msg) return setErr(msg);
 
     setErr("");
+    setUpiId("success@razorpay");
     setStep(2);
   }
 
@@ -182,14 +199,22 @@ export default function EventCard({ event }) {
     const msg = validateForm();
     if (msg) return setErr(msg);
 
+    if (!upiId.trim()) {
+      return setErr("Enter UPI ID.");
+    }
+
+    if (upiId.trim().toLowerCase() !== "success@razorpay") {
+      return setErr("Use demo UPI ID: success@razorpay");
+    }
+
     setErr("");
     setSubmitting(true);
-
-    let registrationId = null;
+    setProcessing(true);
 
     try {
-      const orderRes = await api.post("/payments/razorpay/order", {
-        userId,
+      await new Promise((resolve) => setTimeout(resolve, 1800));
+
+      const res = await api.post("/payments/upi/fake-confirm", {
         eventId: event?.id,
         full_name: form.name,
         reg_no: form.regno,
@@ -197,66 +222,17 @@ export default function EventCard({ event }) {
         phone: form.phone,
         branch: form.branch,
         year: form.year,
+        upiId: upiId.trim(),
       });
 
-      if (!orderRes.data?.ok) {
-        throw new Error(orderRes.data?.message || "Failed to create Razorpay order");
+      if (!res.data?.ok) {
+        throw new Error(res.data?.message || "Payment confirmation failed");
       }
 
-      const d = orderRes.data.data;
-      registrationId = d.registrationId;
-
-      if (!window.Razorpay) {
-        throw new Error("Razorpay SDK not loaded. Add script in index.html.");
-      }
-
-      const options = {
-        key: d.razorpayKeyId,
-        amount: d.amount,
-        currency: d.currency,
-        name: "BTech University Fest",
-        description: `Event Registration: ${event?.title || "Event"}`,
-        order_id: d.orderId,
-        prefill: {
-          name: form.name,
-          email: form.email,
-          contact: form.phone,
-        },
-        handler: async function (response) {
-          try {
-            const verifyRes = await api.post("/payments/razorpay/verify", {
-              registrationId,
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-            });
-
-            if (!verifyRes.data?.ok) {
-              throw new Error(verifyRes.data?.message || "Payment verification failed");
-            }
-
-            setStep(3);
-          } catch (e) {
-            setErr(e?.response?.data?.message || e?.message || "Payment verification failed");
-          }
-        },
-        modal: {
-          ondismiss: async () => {
-            try {
-              if (registrationId) {
-                await api.post("/payments/razorpay/cancel", { registrationId });
-              }
-            } catch (e) {
-              // ignore
-            }
-            setErr("Payment cancelled.");
-          },
-        },
-      };
-
-      const rzp = new window.Razorpay(options);
-      rzp.open();
+      setProcessing(false);
+      setStep(3);
     } catch (e) {
+      setProcessing(false);
       setErr(e?.response?.data?.message || e?.message || "Payment failed. Try again.");
     } finally {
       setSubmitting(false);
@@ -340,6 +316,7 @@ export default function EventCard({ event }) {
           <div className="evModalCard" onClick={(e) => e.stopPropagation()}>
             <div className="evModalHead">
               <div className="evModalTitle">Event Registration</div>
+
               <button className="evModalClose" type="button" onClick={closeModal}>
                 ✕
               </button>
@@ -351,6 +328,7 @@ export default function EventCard({ event }) {
                   <div className="evInfoLabel">Date</div>
                   <div className="evInfoValue">{dateText}</div>
                 </div>
+
                 <div className="evInfoBox">
                   <div className="evInfoLabel">Time</div>
                   <div className="evInfoValue">{timeText}</div>
@@ -362,6 +340,7 @@ export default function EventCard({ event }) {
                   <div className="evInfoLabel">Venue</div>
                   <div className="evInfoValue">{event?.venue || "-"}</div>
                 </div>
+
                 <div className="evInfoBox">
                   <div className="evInfoLabel">Category</div>
                   <div className="evInfoValue">{categoryText}</div>
@@ -375,6 +354,7 @@ export default function EventCard({ event }) {
                     {isPaid ? `Paid • ₹${amount.toFixed(0)}` : "Free"}
                   </div>
                 </div>
+
                 <div className="evInfoBox">
                   <div className="evInfoLabel">Status</div>
                   <div className={`evTypeBadge ${statusBadge.cls}`}>{statusBadge.text}</div>
@@ -392,6 +372,7 @@ export default function EventCard({ event }) {
                     <input
                       value={form.name}
                       onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                      placeholder="Enter your name"
                     />
                   </div>
 
@@ -400,6 +381,7 @@ export default function EventCard({ event }) {
                     <input
                       value={form.regno}
                       onChange={(e) => setForm((f) => ({ ...f, regno: e.target.value }))}
+                      placeholder="Enter register number"
                     />
                   </div>
 
@@ -408,6 +390,7 @@ export default function EventCard({ event }) {
                     <input
                       value={form.email}
                       onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                      placeholder="Enter email"
                     />
                   </div>
 
@@ -416,6 +399,7 @@ export default function EventCard({ event }) {
                     <input
                       value={form.phone}
                       onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+                      placeholder="Enter 10-digit phone"
                     />
                   </div>
 
@@ -455,11 +439,21 @@ export default function EventCard({ event }) {
                   </button>
 
                   {!isPaid ? (
-                    <button className="evAction free" type="button" onClick={registerFree} disabled={submitting}>
+                    <button
+                      className="evAction free"
+                      type="button"
+                      onClick={registerFree}
+                      disabled={submitting}
+                    >
                       {submitting ? "Registering..." : "Register"}
                     </button>
                   ) : (
-                    <button className="evAction paid" type="button" onClick={paidNext} disabled={submitting}>
+                    <button
+                      className="evAction paid"
+                      type="button"
+                      onClick={paidNext}
+                      disabled={submitting}
+                    >
                       Next
                     </button>
                   )}
@@ -470,49 +464,129 @@ export default function EventCard({ event }) {
             {step === 2 && (
               <div className="evBody">
                 <div className="evPayBox">
-                  <div className="evPayTitle">Pay with Razorpay</div>
+                  <div className="evPayTitle">Pay Using UPI</div>
 
                   <div className="evPayRow">
                     <span>Amount</span>
                     <b>₹{amount.toFixed(0)}</b>
                   </div>
 
-                  <div className="evPayNote">
-                    Click <b>Pay Now</b> to complete payment. After successful payment,
-                    registration will be completed instantly ✅
-                  </div>
+                  {!processing ? (
+                    <>
+                      <div className="evPayNote">
+                        Enter the UPI ID below and click <b>Continue</b>.
+                      </div>
+
+                      <div className="evField" style={{ marginTop: 16 }}>
+                        <label>UPI ID</label>
+                        <input
+                          value={upiId}
+                          onChange={(e) => setUpiId(e.target.value)}
+                          placeholder="success@razorpay"
+                          style={{
+                            fontWeight: 800,
+                            fontSize: 16,
+                          }}
+                        />
+                      </div>
+
+                      <div
+                        style={{
+                          marginTop: 12,
+                          padding: "12px 14px",
+                          borderRadius: 14,
+                          background: "rgba(255, 0, 128, 0.08)",
+                          fontWeight: 800,
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        Demo UPI ID: <b>success@razorpay</b>
+                      </div>
+                    </>
+                  ) : (
+                    <div
+                      style={{
+                        marginTop: 18,
+                        padding: "26px 18px",
+                        borderRadius: 18,
+                        textAlign: "center",
+                        background: "rgba(109, 93, 252, 0.08)",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 54,
+                          height: 54,
+                          border: "5px solid rgba(109, 93, 252, 0.2)",
+                          borderTop: "5px solid #6d5dfc",
+                          borderRadius: "50%",
+                          margin: "0 auto 14px",
+                          animation: "spinPay 0.9s linear infinite",
+                        }}
+                      />
+
+                      <div style={{ fontWeight: 900, fontSize: 18 }}>
+                        Processing Payment...
+                      </div>
+
+                      <div style={{ marginTop: 6, color: "#64748b", fontWeight: 700 }}>
+                        Please wait while we confirm your registration.
+                      </div>
+
+                      <style>
+                        {`
+                          @keyframes spinPay {
+                            from { transform: rotate(0deg); }
+                            to { transform: rotate(360deg); }
+                          }
+                        `}
+                      </style>
+                    </div>
+                  )}
                 </div>
 
                 <div className="evActions">
-                  <button className="evGhost" type="button" onClick={() => setStep(1)} disabled={submitting}>
+                  <button
+                    className="evGhost"
+                    type="button"
+                    onClick={() => setStep(1)}
+                    disabled={submitting}
+                  >
                     Back
                   </button>
 
-                  <button className="evAction paid" type="button" onClick={paidConfirm} disabled={submitting}>
-                    {submitting ? "Opening..." : "Pay Now"}
+                  <button
+                    className="evAction paid"
+                    type="button"
+                    onClick={paidConfirm}
+                    disabled={submitting}
+                  >
+                    {submitting ? "Processing..." : "Continue"}
                   </button>
                 </div>
               </div>
             )}
 
             {step === 3 && (
-  <div className="evBody">
-    <div className={`evSuccess ${isPaid ? "paid" : "free"}`}>
-      ✅ Registration Successful!
-      <div className="evSuccessSmall">See you at the event 🎉</div>
-    </div>
+              <div className="evBody">
+                <div className={`evSuccess ${isPaid ? "paid" : "free"}`}>
+                  ✅ Registration Completed!
+                  <div className="evSuccessSmall">
+                    Your payment is confirmed and ticket is generated 🎉
+                  </div>
+                </div>
 
-    <div className="evActions">
-      <button
-        className={`evAction ${isPaid ? "paid" : "free"}`}
-        type="button"
-        onClick={closeModal}
-      >
-        Close
-      </button>
-    </div>
-  </div>
-)}
+                <div className="evActions">
+                  <button
+                    className={`evAction ${isPaid ? "paid" : "free"}`}
+                    type="button"
+                    onClick={closeModal}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

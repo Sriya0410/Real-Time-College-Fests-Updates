@@ -447,6 +447,106 @@ exports.cancelFoodRazorpayPayment = async (req, res) => {
   }
 };
 
+// =====================================================
+// CUSTOM RAZORPAY-STYLE UPI DEMO PAYMENT
+// POST /api/food/orders/upi/fake-confirm
+// =====================================================
+exports.fakeFoodUpiPaymentConfirm = async (req, res) => {
+  if (!ensureFoodTime(res)) return;
+
+  const conn = await db.getConnection();
+
+  try {
+    const userId = req.user.id;
+    const { stall_id, items, notes, upiId } = req.body;
+
+    const stallId = Number(stall_id);
+
+    if (!stallId) {
+      return res.status(400).json({
+        ok: false,
+        message: "stall_id required",
+      });
+    }
+
+    if (!upiId || String(upiId).trim().toLowerCase() !== "success@razorpay") {
+      return res.status(400).json({
+        ok: false,
+        message: "Invalid demo UPI ID. Use success@razorpay",
+      });
+    }
+
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({
+        ok: false,
+        message: "items required",
+      });
+    }
+
+    for (const it of items) {
+      if (!it.food_item_id || Number(it.qty) <= 0) {
+        return res.status(400).json({
+          ok: false,
+          message: "Invalid items payload",
+        });
+      }
+    }
+
+    await conn.beginTransaction();
+
+    const { total, itemMap } = await computeOrderTotal(conn, items);
+
+    const demoPaymentId = `DEMO-UPI-FOOD-${Date.now()}`;
+
+    const [orderResult] = await conn.query(
+      `INSERT INTO food_orders
+       (user_id, stall_id, total_amount, status, notes, payment_method, is_paid, razorpay_payment_id)
+       VALUES (?, ?, ?, 'PLACED', ?, 'UPI', 1, ?)`,
+      [userId, stallId, total, notes || null, demoPaymentId]
+    );
+
+    const orderId = orderResult.insertId;
+
+    for (const it of items) {
+      const row = itemMap.get(Number(it.food_item_id));
+
+      await conn.query(
+        `INSERT INTO food_order_items
+         (order_id, food_item_id, qty, price)
+         VALUES (?, ?, ?, ?)`,
+        [orderId, Number(it.food_item_id), Number(it.qty), Number(row.price)]
+      );
+    }
+
+    await conn.commit();
+
+    return res.status(201).json({
+      ok: true,
+      message: "Demo UPI payment successful ✅ Order placed!",
+      data: {
+        id: orderId,
+        foodOrderId: orderId,
+        total_amount: total,
+        status: "PLACED",
+        payment_method: "UPI",
+        is_paid: 1,
+        transactionRef: demoPaymentId,
+      },
+    });
+  } catch (err) {
+    await conn.rollback();
+
+    console.error("fakeFoodUpiPaymentConfirm error:", err);
+
+    return res.status(500).json({
+      ok: false,
+      message: err?.message || "Demo UPI payment failed",
+    });
+  } finally {
+    conn.release();
+  }
+};
+
 // ✅ GET /api/food/orders/my
 exports.myOrders = async (req, res) => {
   try {

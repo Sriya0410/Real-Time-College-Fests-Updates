@@ -3,6 +3,12 @@ import { Link } from "react-router-dom";
 import api from "../../services/api";
 import "../../styles/adminOrdersPage.css";
 
+const getPanelToken = () =>
+  localStorage.getItem("admin_token") ||
+  localStorage.getItem("adminToken") ||
+  localStorage.getItem("student_affairs_token") ||
+  localStorage.getItem("token");
+
 export default function AdminFoodOrders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -21,22 +27,33 @@ export default function AdminFoodOrders() {
     setLoading(true);
 
     try {
-      const adminToken = localStorage.getItem("admin_token");
-      if (!adminToken) {
-        throw new Error("Admin token missing. Please login again as ADMIN.");
+      const token = getPanelToken();
+
+      if (!token) {
+        throw new Error("Login token missing. Please login again.");
       }
 
-      const res = await api.get("/admin/orders");
-      setOrders(res.data?.data || []);
+      const res = await api.get("/admin/orders", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setOrders(Array.isArray(res.data?.data) ? res.data.data : []);
     } catch (e) {
       const code = e?.response?.status;
+      const data = e?.response?.data;
 
       if (code === 401) {
-        setErr("Unauthorized (401). Please login again as ADMIN.");
+        setErr("Unauthorized (401). Please login again.");
       } else if (code === 403) {
-        setErr("Forbidden (403). Your token is not ADMIN. Login using Admin Login.");
+        setErr(
+          `Forbidden (403). Your role is not allowed. ${
+            data?.yourRole ? `Your role: ${data.yourRole}. ` : ""
+          }Allowed: ADMIN, STUDENT_AFFAIRS.`
+        );
       } else {
-        setErr(e?.response?.data?.message || e?.message || "Failed to load orders");
+        setErr(data?.message || e?.message || "Failed to load orders");
       }
 
       setOrders([]);
@@ -47,10 +64,22 @@ export default function AdminFoodOrders() {
 
   const markPaid = async (orderId) => {
     setErr("");
+
     try {
-      await api.patch(`/admin/orders/${orderId}/paid`);
+      const token = getPanelToken();
+
+      await api.patch(
+        `/admin/orders/${orderId}/paid`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       setOrders((prev) =>
-        prev.map((o) => (o.id === orderId ? { ...o, is_paid: 1 } : o))
+        prev.map((o) => (Number(o.id) === Number(orderId) ? { ...o, is_paid: 1 } : o))
       );
     } catch (e) {
       setErr(e?.response?.data?.message || "Failed to mark paid");
@@ -59,10 +88,24 @@ export default function AdminFoodOrders() {
 
   const updateStatus = async (orderId, nextStatus) => {
     setErr("");
+
     try {
-      await api.patch(`/admin/orders/${orderId}/status`, { status: nextStatus });
+      const token = getPanelToken();
+
+      await api.patch(
+        `/admin/orders/${orderId}/status`,
+        { status: nextStatus },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       setOrders((prev) =>
-        prev.map((o) => (o.id === orderId ? { ...o, status: nextStatus } : o))
+        prev.map((o) =>
+          Number(o.id) === Number(orderId) ? { ...o, status: nextStatus } : o
+        )
       );
     } catch (e) {
       setErr(e?.response?.data?.message || "Failed to update status");
@@ -79,12 +122,15 @@ export default function AdminFoodOrders() {
         String(o.user_id || "").includes(qq) ||
         String(o.stall_id || "").includes(qq) ||
         String(o.stall_name || "").toLowerCase().includes(qq) ||
-        String(o.user_name || o.student_name || "").toLowerCase().includes(qq);
+        String(o.user_name || o.student_name || "").toLowerCase().includes(qq) ||
+        String(o.user_phone || "").toLowerCase().includes(qq) ||
+        String(o.user_email || "").toLowerCase().includes(qq);
 
       const matchStatus =
         status === "ALL" || String(o.status || "").toUpperCase() === status;
 
       const isPaidNow = Number(o.is_paid || 0) === 1;
+
       const matchPaid =
         paid === "ALL" || (paid === "PAID" ? isPaidNow : !isPaidNow);
 
@@ -93,7 +139,10 @@ export default function AdminFoodOrders() {
   }, [orders, q, status, paid]);
 
   const totalRevenue = useMemo(
-    () => filtered.reduce((sum, o) => sum + Number(o.total_amount || 0), 0),
+    () =>
+      filtered
+        .filter((o) => Number(o.is_paid || 0) === 1)
+        .reduce((sum, o) => sum + Number(o.total_amount || 0), 0),
     [filtered]
   );
 
@@ -107,12 +156,13 @@ export default function AdminFoodOrders() {
       <div className="adminOrdersHeader">
         <div>
           <h1 className="adminOrdersTitle">Food Orders</h1>
+
           <div className="adminOrdersSub">
             {loading
               ? "Loading..."
               : `${filtered.length} orders • ₹${totalRevenue.toFixed(
                   0
-                )} total • ${paidCount} paid`}
+                )} paid total • ${paidCount} paid`}
           </div>
         </div>
 
@@ -128,7 +178,7 @@ export default function AdminFoodOrders() {
           className="adminInput"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Search: order id / stall / user..."
+          placeholder="Search: order id / stall / user / phone / email..."
         />
 
         <select
@@ -167,7 +217,7 @@ export default function AdminFoodOrders() {
 
           {filtered.map((o) => {
             const isPaidNow = Number(o.is_paid || 0) === 1;
-            const pm = (o.payment_method || "CASH").toUpperCase();
+            const pm = String(o.payment_method || "CASH").toUpperCase();
             const st = String(o.status || "PLACED").toUpperCase();
 
             return (
@@ -180,16 +230,23 @@ export default function AdminFoodOrders() {
                 </div>
 
                 <div className="td">
-                  <div className="strong">{o.stall_name || `Stall #${o.stall_id}`}</div>
+                  <div className="strong">
+                    {o.stall_name || `Stall #${o.stall_id}`}
+                  </div>
                   <div className="mutedLine">stall_id: {o.stall_id}</div>
                 </div>
 
                 <div className="td">
                   <div className="strong">{o.user_name || `User #${o.user_id}`}</div>
                   <div className="mutedLine">user_id: {o.user_id}</div>
+                  {o.user_phone ? (
+                    <div className="mutedLine">phone: {o.user_phone}</div>
+                  ) : null}
                 </div>
 
-                <div className="td strong">₹{Number(o.total_amount || 0).toFixed(0)}</div>
+                <div className="td strong">
+                  ₹{Number(o.total_amount || 0).toFixed(0)}
+                </div>
 
                 <div className="td">
                   <div className="payRow">
@@ -198,10 +255,18 @@ export default function AdminFoodOrders() {
                       {isPaidNow ? "PAID" : "UNPAID"}
                     </span>
                   </div>
+
+                  {o.razorpay_payment_id ? (
+                    <div className="mutedLine">
+                      Ref: {String(o.razorpay_payment_id).slice(0, 18)}
+                    </div>
+                  ) : null}
                 </div>
 
                 <div className="td">
-                  <span className={`statusPill status-${st.toLowerCase()}`}>{st}</span>
+                  <span className={`statusPill status-${st.toLowerCase()}`}>
+                    {st}
+                  </span>
                 </div>
 
                 <div className="td actions">
@@ -234,6 +299,8 @@ export default function AdminFoodOrders() {
           {!loading && filtered.length === 0 && (
             <div className="adminEmpty2">No orders found.</div>
           )}
+
+          {loading && <div className="adminEmpty2">Loading orders...</div>}
         </div>
       </div>
     </div>
