@@ -17,18 +17,18 @@ const {
 router.get("/stalls", listStalls);
 router.get("/stalls/:stallId/items", listItemsByStall);
 
-// CASH
+// CASH ORDER
 router.post("/orders", auth, createOrder);
 
-// REAL RAZORPAY - keep for future use
+// REAL RAZORPAY - keep for future if needed
 router.post("/orders/razorpay/order", auth, createFoodRazorpayOrder);
 router.post("/orders/razorpay/verify", auth, verifyFoodRazorpayPayment);
 router.post("/orders/razorpay/cancel", auth, cancelFoodRazorpayPayment);
 
-// CUSTOM RAZORPAY-STYLE UPI DEMO PAYMENT
+// CUSTOM UPI DEMO PAYMENT
 router.post("/orders/upi/fake-confirm", auth, fakeFoodUpiPaymentConfirm);
 
-// student orders
+// STUDENT ORDERS
 router.get("/orders/my", auth, myOrders);
 router.get("/orders/:id/receipt", auth, getFoodOrderReceipt);
 router.post("/orders/:id/cancel", auth, cancelMyFoodOrder);

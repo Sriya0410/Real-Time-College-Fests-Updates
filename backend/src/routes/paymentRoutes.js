@@ -10,12 +10,12 @@ const {
   refundPaymentById,
 } = require("../controllers/paymentController");
 
-// Real Razorpay routes - keep for future use
+// Real Razorpay routes
 router.post("/razorpay/order", auth, createRazorpayOrder);
 router.post("/razorpay/verify", auth, verifyRazorpayPayment);
 router.post("/razorpay/cancel", auth, cancelRazorpayRegistration);
 
-// Custom Razorpay-style UPI demo payment
+// Demo UPI route - keep for future demo use
 router.post("/upi/fake-confirm", auth, fakeUpiPaymentConfirm);
 
 // Payment history
