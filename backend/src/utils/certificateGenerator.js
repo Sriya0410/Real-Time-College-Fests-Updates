@@ -4,11 +4,31 @@ const QRCode = require("qrcode");
 
 function replaceAll(template, map) {
   let output = template;
+
   for (const [key, value] of Object.entries(map)) {
     const safeValue = value == null ? "" : String(value);
     output = output.split(`{{${key}}}`).join(safeValue);
   }
+
   return output;
+}
+
+function getTemplatePath() {
+  const possiblePaths = [
+    path.join(__dirname, "../templates/certificateTemplate.html"),
+    path.join(process.cwd(), "src/templates/certificateTemplate.html"),
+    path.join(process.cwd(), "templates/certificateTemplate.html"),
+  ];
+
+  for (const p of possiblePaths) {
+    if (fs.existsSync(p)) {
+      return p;
+    }
+  }
+
+  throw new Error(
+    `certificateTemplate.html not found. Create file at: ${possiblePaths[0]}`
+  );
 }
 
 async function generateCertificateHtml({
@@ -21,7 +41,7 @@ async function generateCertificateHtml({
   verifyUrl,
   baseUrl,
 }) {
-  const templatePath = path.join(__dirname, "../templates/certificateTemplate.html");
+  const templatePath = getTemplatePath();
   const template = fs.readFileSync(templatePath, "utf8");
 
   const qrCodeDataUrl = await QRCode.toDataURL(verifyUrl);
@@ -34,8 +54,11 @@ async function generateCertificateHtml({
     CERTIFICATE_NO: certificateNo,
     ISSUED_AT: issuedAt,
     QR_CODE_DATA_URL: qrCodeDataUrl,
+
+    // Images from backend public assets folder
     LOGO_URL: `${baseUrl}/assets/vignan-logo.png`,
     VC_SIGNATURE_URL: `${baseUrl}/assets/vc-signature-cropped.png`,
+
     COLLEGE_NAME: `Vignan's Foundation for Science, Technology & Research`,
     COLLEGE_SUBTITLE: `(Deemed to be University)`,
     VERIFY_URL: verifyUrl,

@@ -2,36 +2,56 @@ export default function CertificateCard({
   title,
   subtitle,
   badge,
-  badgeClass = "",
+  badgeClass,
   details = [],
-  buttonText,
+  buttonText = "Open",
+  downloadText = "Download",
   onClick,
+  onDownload,
   disabled = false,
+  downloadDisabled = false,
 }) {
   return (
     <div className="certCard">
-      {badge ? <div className={`certBadge ${badgeClass}`}>{badge}</div> : null}
+      {badge ? (
+        <div className={`certBadge ${badgeClass || ""}`}>{badge}</div>
+      ) : null}
 
       <h3>{title}</h3>
+
       {subtitle ? <p className="certSubtitle">{subtitle}</p> : null}
 
       <div className="certDetails">
-        {details.map((item, idx) => (
-          <p key={idx}>
-            <b>{item.label}:</b> {item.value}
+        {details.map((item, index) => (
+          <p key={index}>
+            <strong>{item.label}:</strong> {item.value}
           </p>
         ))}
       </div>
 
-      {buttonText ? (
+      <div className="certActions">
         <button
+          type="button"
           className={`certBtn ${disabled ? "disabled" : ""}`}
           onClick={onClick}
           disabled={disabled}
         >
           {buttonText}
         </button>
-      ) : null}
+
+        {onDownload ? (
+          <button
+            type="button"
+            className={`certBtn certDownloadBtn ${
+              downloadDisabled ? "disabled" : ""
+            }`}
+            onClick={onDownload}
+            disabled={downloadDisabled}
+          >
+            {downloadText}
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 }

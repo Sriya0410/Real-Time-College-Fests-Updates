@@ -1,4 +1,6 @@
 const pool = require("../config/db");
+const puppeteer = require("puppeteer");
+
 const {
   getEligibility,
   createCertificateIfNeeded,
@@ -6,23 +8,85 @@ const {
   listMyRegistrationsWithEvents,
   formatDateIN,
 } = require("../services/certificateService");
+
 const { generateCertificateHtml } = require("../utils/certificateGenerator");
 
 function getBaseUrl(req) {
   return `${req.protocol}://${req.get("host")}`;
 }
 
+function safeFileName(value) {
+  return String(value || "certificate")
+    .trim()
+    .replace(/[^a-z0-9]/gi, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .toLowerCase();
+}
+
+async function buildCertificateHtmlForUser(req, userId, eventId) {
+  const eligibility = await getEligibility(userId, eventId);
+
+  if (!eligibility.eligible) {
+    const err = new Error(eligibility.reason);
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const certificate = await createCertificateIfNeeded({
+    userId,
+    eventId,
+    registrationId: eligibility.registration.id,
+    certificateName: eligibility.user.full_name,
+  });
+
+  if (!certificate || !certificate.certificate_no) {
+    const err = new Error("Certificate record was not created properly.");
+    err.statusCode = 500;
+    throw err;
+  }
+
+  const baseUrl = getBaseUrl(req);
+  const verifyUrl = `${baseUrl}/api/certificates/verify/${certificate.certificate_no}`;
+
+  const html = await generateCertificateHtml({
+    userName: eligibility.user.full_name,
+    eventTitle: eligibility.event.title,
+    eventDate: formatDateIN(eligibility.event.event_date),
+    venue: eligibility.event.venue,
+    certificateNo: certificate.certificate_no,
+    issuedAt: formatDateIN(certificate.issued_at || new Date()),
+    verifyUrl,
+    baseUrl,
+  });
+
+  return {
+    html,
+    certificate,
+    eligibility,
+  };
+}
+
 exports.getMyCertificates = async (req, res) => {
   try {
     const userId = Number(req.user?.id);
+
     if (!userId) {
-      return res.status(401).json({ ok: false, message: "Unauthorized" });
+      return res.status(401).json({
+        ok: false,
+        message: "Unauthorized",
+      });
     }
 
     const data = await listMyCertificates(userId);
-    return res.json({ ok: true, data });
+
+    return res.json({
+      ok: true,
+      data,
+    });
   } catch (e) {
     console.error("getMyCertificates error:", e);
+
     return res.status(500).json({
       ok: false,
       message: "Failed to load certificates.",
@@ -34,8 +98,12 @@ exports.getMyCertificates = async (req, res) => {
 exports.getMyCertificateDashboard = async (req, res) => {
   try {
     const userId = Number(req.user?.id);
+
     if (!userId) {
-      return res.status(401).json({ ok: false, message: "Unauthorized" });
+      return res.status(401).json({
+        ok: false,
+        message: "Unauthorized",
+      });
     }
 
     const generatedCertificates = await listMyCertificates(userId);
@@ -46,9 +114,11 @@ exports.getMyCertificateDashboard = async (req, res) => {
     );
 
     const eligibility = {};
+
     for (const reg of registrations) {
       try {
-        const result = await getEligibility(userId, reg.event_id);
+        const result = await getEligibility(userId, Number(reg.event_id));
+
         eligibility[reg.event_id] = {
           eligible: result.eligible,
           reason: result.reason,
@@ -56,9 +126,10 @@ exports.getMyCertificateDashboard = async (req, res) => {
         };
       } catch (e) {
         console.error(`eligibility error for event ${reg.event_id}:`, e);
+
         eligibility[reg.event_id] = {
           eligible: false,
-          reason: "Eligibility check failed for this event.",
+          reason: e.message || "Eligibility check failed for this event.",
           existingCertificate: null,
         };
       }
@@ -75,6 +146,7 @@ exports.getMyCertificateDashboard = async (req, res) => {
     });
   } catch (e) {
     console.error("getMyCertificateDashboard error:", e);
+
     return res.status(500).json({
       ok: false,
       message: "Failed to load certificate dashboard.",
@@ -89,11 +161,17 @@ exports.checkEligibility = async (req, res) => {
     const eventId = Number(req.params.eventId);
 
     if (!userId) {
-      return res.status(401).json({ ok: false, message: "Unauthorized" });
+      return res.status(401).json({
+        ok: false,
+        message: "Unauthorized",
+      });
     }
 
     if (!eventId) {
-      return res.status(400).json({ ok: false, message: "Invalid event id." });
+      return res.status(400).json({
+        ok: false,
+        message: "Invalid event id.",
+      });
     }
 
     const result = await getEligibility(userId, eventId);
@@ -107,6 +185,7 @@ exports.checkEligibility = async (req, res) => {
     });
   } catch (e) {
     console.error("checkEligibility error:", e);
+
     return res.status(500).json({
       ok: false,
       message: "Failed to check certificate eligibility.",
@@ -120,42 +199,26 @@ exports.downloadCertificate = async (req, res) => {
     const userId = Number(req.user?.id);
     const eventId = Number(req.params.eventId);
 
+    console.log("Certificate open request:", {
+      userId,
+      eventId,
+    });
+
     if (!userId) {
-      return res.status(401).json({ ok: false, message: "Unauthorized" });
-    }
-
-    if (!eventId) {
-      return res.status(400).json({ ok: false, message: "Invalid event id." });
-    }
-
-    const eligibility = await getEligibility(userId, eventId);
-    if (!eligibility.eligible) {
-      return res.status(400).json({
+      return res.status(401).json({
         ok: false,
-        message: eligibility.reason,
+        message: "Unauthorized",
       });
     }
 
-    const certificate = await createCertificateIfNeeded({
-      userId,
-      eventId,
-      registrationId: eligibility.registration.id,
-      certificateName: eligibility.user.full_name,
-    });
+    if (!eventId) {
+      return res.status(400).json({
+        ok: false,
+        message: "Invalid event id.",
+      });
+    }
 
-    const baseUrl = getBaseUrl(req);
-    const verifyUrl = `${baseUrl}/api/certificates/verify/${certificate.certificate_no}`;
-
-    const html = await generateCertificateHtml({
-      userName: eligibility.user.full_name,
-      eventTitle: eligibility.event.title,
-      eventDate: formatDateIN(eligibility.event.event_date),
-      venue: eligibility.event.venue,
-      certificateNo: certificate.certificate_no,
-      issuedAt: formatDateIN(certificate.issued_at),
-      verifyUrl,
-      baseUrl,
-    });
+    const { html } = await buildCertificateHtmlForUser(req, userId, eventId);
 
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.setHeader(
@@ -163,22 +226,139 @@ exports.downloadCertificate = async (req, res) => {
       `inline; filename="certificate-${eventId}-${userId}.html"`
     );
 
-    return res.send(html);
+    return res.status(200).send(html);
   } catch (e) {
     console.error("downloadCertificate error:", e);
-    return res.status(500).json({
+
+    return res.status(e.statusCode || 500).json({
       ok: false,
-      message: "Failed to generate certificate.",
-      error: e.message,
+      message: e.message || "Failed to generate certificate.",
     });
+  }
+};
+
+exports.downloadCertificatePdf = async (req, res) => {
+  let browser = null;
+
+  try {
+    const userId = Number(req.user?.id);
+    const eventId = Number(req.params.eventId);
+
+    console.log("Certificate PDF download request:", {
+      userId,
+      eventId,
+    });
+
+    if (!userId) {
+      return res.status(401).json({
+        ok: false,
+        message: "Unauthorized",
+      });
+    }
+
+    if (!eventId) {
+      return res.status(400).json({
+        ok: false,
+        message: "Invalid event id.",
+      });
+    }
+
+    const { html, certificate, eligibility } = await buildCertificateHtmlForUser(
+      req,
+      userId,
+      eventId
+    );
+
+    browser = await puppeteer.launch({
+      headless: "new",
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+      ],
+    });
+
+    const page = await browser.newPage();
+
+    // ✅ Prevent timeout
+    page.setDefaultNavigationTimeout(0);
+    page.setDefaultTimeout(0);
+
+    await page.setViewport({
+      width: 1600,
+      height: 1060,
+      deviceScaleFactor: 1,
+    });
+
+    // ✅ Use domcontentloaded instead of networkidle0
+    await page.setContent(html, {
+      waitUntil: "domcontentloaded",
+      timeout: 0,
+    });
+
+    // ✅ Wait for images, but don't block forever
+    await page.evaluate(async () => {
+      const imgs = Array.from(document.images);
+
+      await Promise.all(
+        imgs.map((img) => {
+          if (img.complete) return Promise.resolve();
+
+          return new Promise((resolve) => {
+            img.onload = resolve;
+            img.onerror = resolve;
+            setTimeout(resolve, 2000);
+          });
+        })
+      );
+    });
+
+    const pdfBuffer = await page.pdf({
+      printBackground: true,
+      width: "1600px",
+      height: "1060px",
+      margin: {
+        top: "0px",
+        right: "0px",
+        bottom: "0px",
+        left: "0px",
+      },
+      preferCSSPageSize: false,
+    });
+
+    const eventTitle = safeFileName(eligibility.event.title);
+    const certNo = safeFileName(certificate.certificate_no);
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${eventTitle}-${certNo}.pdf"`
+    );
+
+    return res.status(200).send(pdfBuffer);
+  } catch (e) {
+    console.error("downloadCertificatePdf error:", e);
+
+    return res.status(e.statusCode || 500).json({
+      ok: false,
+      message: e.message || "Failed to download certificate PDF.",
+    });
+  } finally {
+    if (browser) {
+      await browser.close();
+    }
   }
 };
 
 exports.verifyCertificate = async (req, res) => {
   try {
     const certificateNo = String(req.params.certificateNo || "").trim();
+
     if (!certificateNo) {
-      return res.status(400).json({ ok: false, message: "Invalid certificate number." });
+      return res.status(400).json({
+        ok: false,
+        message: "Invalid certificate number.",
+      });
     }
 
     const [rows] = await pool.query(
@@ -244,6 +424,7 @@ exports.verifyCertificate = async (req, res) => {
     `);
   } catch (e) {
     console.error("verifyCertificate error:", e);
+
     return res.status(500).send(`
       <html>
         <head><title>Certificate Verification</title></head>

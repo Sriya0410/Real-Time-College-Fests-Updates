@@ -29,12 +29,14 @@ const certificateRoutes = require("./routes/certificateRoutes");
 const app = express();
 const server = http.createServer(app);
 
-// CORS
+// allowed frontend origins
 const allowedOrigins = [
   process.env.CLIENT_ORIGIN || "http://localhost:5173",
   process.env.FRONTEND_BASE_URL || "http://localhost:5173",
+  "http://localhost:5173",
 ];
 
+// CORS
 app.use(
   cors({
     origin: function (origin, cb) {
@@ -54,22 +56,28 @@ app.use(
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
-// debug
+// request debug log
 app.use((req, _res, next) => {
   console.log(`${req.method} ${req.url}`);
   next();
 });
 
-// static
+// static folders
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
-app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
-// basic
-app.use("/api/health", (_req, res) => {
-  res.json({ ok: true });
+// ✅ IMPORTANT FOR CERTIFICATE IMAGES
+// Keep images in: backend/src/assets/
+app.use("/assets", express.static(path.join(__dirname, "assets")));
+
+// health route
+app.get("/api/health", (_req, res) => {
+  res.json({
+    ok: true,
+    message: "Backend running",
+  });
 });
 
-// auth
+// auth routes
 app.use("/api/auth", authRoutes);
 
 // main routes
